@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "463300478424",
+    "firebase_url": "https://leoclub-abc88.firebaseio.com",
+    "project_id": "leoclub-abc88",
+    "storage_bucket": "leoclub-abc88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463300478424:android:bf969914fe96d6888e9ead",
+        "android_client_info": {
+          "package_name": "com.android.beastchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463300478424-u5prk856fqno8b31bvngkde4o7kbhmg4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.beastchat",
+            "certificate_hash": "8f428b0b338a5cca7b741d8057792f6e717068df"
+          }
+        },
+        {
+          "client_id": "463300478424-vnla7qjnosag1kupe3a4lnrntjuhge75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARPv89SakuTzwUppa-szz1mg-Frw5ce6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463300478424-vnla7qjnosag1kupe3a4lnrntjuhge75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
