@@ -1,6 +1,5 @@
 package com.android.beastchat.Fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,25 +9,25 @@ import android.widget.Button
 import android.widget.EditText
 import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnClick
 import butterknife.Unbinder
-import com.android.beastchat.Activities.RegisterActivity
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import io.socket.client.IO
 import java.net.URISyntaxException
 
-class LoginFragment : BaseFragments() {
-    @BindView(R.id.fragment_login_userName) lateinit var mUserName : EditText
-    @BindView(R.id.fragment_login_userPassword) lateinit var mPassword : EditText
-    @BindView(R.id.fragment_login_login_button) lateinit var mLoginButton : Button
-    @BindView(R.id.fragment_login_register_button) lateinit var mRegisterButton : Button
+class RegisterFragment : BaseFragments() {
+
+    @BindView(R.id.fragment_register_userName) lateinit var mUserName : EditText
+    @BindView(R.id.fragment_register_userEmail) lateinit var mUserEmail : EditText
+    @BindView(R.id.fragment_register_userPassword) lateinit var mPassword : EditText
+    @BindView(R.id.fragment_register_LoginButton) lateinit var mLoginButton : Button
+    @BindView(R.id.fragment_register_registerButton) lateinit var mRegisterButton : Button
 
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
 
-    fun newInstant() : LoginFragment {
-        return LoginFragment()
+    fun newInstant() : RegisterFragment {
+        return RegisterFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,14 +45,9 @@ class LoginFragment : BaseFragments() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_login, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_register, container, false)
         mUnbinder = ButterKnife.bind(this, rootView)
         return rootView
-    }
-
-    @OnClick(R.id.fragment_login_register_button)
-    fun setmRegisterButton() {
-        startActivity(Intent(activity, RegisterActivity::class.java))
     }
 
     override fun onDestroyView() {
