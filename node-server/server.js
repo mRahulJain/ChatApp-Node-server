@@ -10,13 +10,8 @@ admin.initializeApp({
   databaseURL: "https://leoclub-abc88.firebaseio.com"
 });
 
-io.on('connection', function(socket){
-  console.log(`Client ${socket.id} is connected`);
-
-  socket.once('disconnect', function(){
-      console.log('A client has disconnected');
-  });
-});
+var accountRequests = require('./firebase/account-services');
+accountRequests.userAccountRequests(io);
 
 http.listen(3000, ()=>{
   console.log('Server is listening to port 3000');
