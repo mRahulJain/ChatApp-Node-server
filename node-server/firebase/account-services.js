@@ -22,7 +22,7 @@ function registerUser(socket, io) {
       console.log("user was registered successfully");
       var db = admin.database();
       var ref = db.ref('users');
-      var userRef = ref.child(encodeEmail(data.email));
+      var userRef = ref.child(userRecord.uid);
       var date = {
         date: admin.database.ServerValue.TIMESTAMP
       };
@@ -39,9 +39,9 @@ function registerUser(socket, io) {
       Object.keys(io.sockets.sockets).forEach((id) => {
         if(id == socket.id) {
           var message = {
-            text: 'success'
+            text: 'Success'
           }
-          io.to(id).emit('message', message);
+          socket.emit('message', message);
         }
       });
     })
@@ -63,10 +63,6 @@ function detectDisconnection(socket, io) {
   socket.once('disconnect', function(){
       console.log('A client has disconnected');
   });
-}
-
-function encodeEmail(email) {
-  return email.replace('.',',')
 }
 
 module.exports = {

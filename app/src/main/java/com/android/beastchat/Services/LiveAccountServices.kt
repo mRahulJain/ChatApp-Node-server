@@ -3,10 +3,13 @@ package com.android.beastchat.Services
 import android.util.Log
 import android.util.Patterns
 import android.widget.EditText
+import android.widget.Toast
+import com.android.beastchat.Activities.BaseFragmentActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONException
@@ -105,6 +108,55 @@ class LiveAccountServices {
                         USER_ERROR_EMAIL_BAD_FORMAT -> {
                             userEmail.error = "Email is wrongly formatted"
                         }
+                    }
+                }
+
+                override fun onError(e: Throwable?) {
+                }
+            })
+        return disposable
+    }
+
+    fun registerResponse(data: JSONObject, activity : BaseFragmentActivity?) : Disposable {
+        val jsonObjectObservable = Observable.just(data)
+        lateinit var disposable: Disposable
+        jsonObjectObservable
+            .subscribeOn(Schedulers.io())
+            .map{
+                var message = ""
+                try {
+                    Log.d("myCHECK", "${it.get("text")}")
+                    message = it.get("text") as String
+                } catch (e: JSONException) {
+                    Log.e("myError", "${e.localizedMessage}")
+                }
+                message
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<String> {
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable?) {
+                    if (d != null) {
+                        disposable = d
+                    }
+                }
+
+                override fun onNext(stringResponse: String?) {
+                    if(stringResponse.equals("Success")) {
+                        activity!!.finish()
+                        Toast.makeText(
+                            activity,
+                            "User registered successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            activity,
+                            stringResponse,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
 

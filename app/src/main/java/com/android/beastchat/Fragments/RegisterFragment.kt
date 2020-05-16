@@ -1,5 +1,6 @@
 package com.android.beastchat.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,10 +12,13 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
+import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveAccountServices
 import io.socket.client.IO
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 import java.net.URISyntaxException
 
 class RegisterFragment : BaseFragments() {
@@ -28,6 +32,7 @@ class RegisterFragment : BaseFragments() {
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
     private lateinit var mLiveAccountServices: LiveAccountServices
+    var mAcitvity: BaseFragmentActivity? = null
 
     fun newInstant() : RegisterFragment {
         return RegisterFragment()
@@ -41,6 +46,7 @@ class RegisterFragment : BaseFragments() {
             Log.d("myError", "${e.localizedMessage}")
         }
         mSocket.connect()
+        mSocket.on("message", accountResponse())
         mLiveAccountServices = LiveAccountServices().getInstant()
     }
 
@@ -61,6 +67,18 @@ class RegisterFragment : BaseFragments() {
         activity!!.finish()
     }
 
+    private fun accountResponse() : Emitter.Listener {
+        return Emitter.Listener {
+            val data = it[0] as JSONObject
+            mCompositeDisposable.add(
+                mLiveAccountServices.registerResponse(
+                    data,
+                    mAcitvity
+                )
+            )
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,6 +87,16 @@ class RegisterFragment : BaseFragments() {
         val rootView = inflater.inflate(R.layout.fragment_register, container, false)
         mUnbinder = ButterKnife.bind(this, rootView)
         return rootView
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mAcitvity = context as BaseFragmentActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mAcitvity = null
     }
 
     override fun onDestroyView() {
