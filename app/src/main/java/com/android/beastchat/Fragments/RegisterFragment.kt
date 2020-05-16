@@ -9,9 +9,11 @@ import android.widget.Button
 import android.widget.EditText
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import butterknife.Unbinder
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.android.beastchat.Services.LiveAccountServices
 import io.socket.client.IO
 import java.net.URISyntaxException
 
@@ -25,6 +27,7 @@ class RegisterFragment : BaseFragments() {
 
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
+    private lateinit var mLiveAccountServices: LiveAccountServices
 
     fun newInstant() : RegisterFragment {
         return RegisterFragment()
@@ -38,6 +41,24 @@ class RegisterFragment : BaseFragments() {
             Log.d("myError", "${e.localizedMessage}")
         }
         mSocket.connect()
+        mLiveAccountServices = LiveAccountServices().getInstant()
+    }
+
+    @OnClick(R.id.fragment_register_registerButton)
+    fun setmRegisterButton() {
+        mCompositeDisposable.add(
+            mLiveAccountServices.sendRegistrationInfo(
+                mUserName,
+                mUserEmail,
+                mPassword,
+                mSocket
+            )
+        )
+    }
+
+    @OnClick(R.id.fragment_register_LoginButton)
+    fun setmLoginButton() {
+        activity!!.finish()
     }
 
     override fun onCreateView(
