@@ -8,8 +8,8 @@
 
     <EditText
         android:inputType="text"
-        android:id="@+id/fragment_login_userName"
-        android:hint="UserName"
+        android:id="@+id/fragment_login_userEmail"
+        android:hint="UserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <EditText
