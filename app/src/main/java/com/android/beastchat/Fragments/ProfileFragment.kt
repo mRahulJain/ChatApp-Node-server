@@ -11,9 +11,9 @@ import com.android.beastchat.R
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class InboxFragment : BaseFragments() {
-    fun newInstant() : InboxFragment {
-        return InboxFragment()
+class ProfileFragment : BaseFragments() {
+    fun newInstant() : ProfileFragment {
+        return ProfileFragment()
     }
 
     private lateinit var mUnbinder: Unbinder
@@ -23,12 +23,12 @@ class InboxFragment : BaseFragments() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_inbox, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
+        val nav = rootView!!.findViewById<BottomNavigationView>(R.id.nav_viewP)
         mUnbinder = ButterKnife.bind(this, rootView)
-        val nav = rootView!!.findViewById<BottomNavigationView>(R.id.nav_viewI)
-        nav.id = R.id.tab_inbox
-        setUpBottomBar(nav, 1)
-        nav.selectedItemId = R.id.tab_inbox
+        nav.id = R.id.tab_profile
+        setUpBottomBar(nav, 3)
+        nav.selectedItemId = R.id.tab_profile
         return rootView
     }
 
@@ -36,5 +36,4 @@ class InboxFragment : BaseFragments() {
         super.onDestroy()
         mUnbinder.unbind()
     }
-
 }

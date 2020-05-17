@@ -8,11 +8,11 @@
     <FrameLayout
         android:layout_weight="1"
         android:id="@+id/frag"
-        app:layout_constraintBottom_toTopOf="@id/nav_viewI"
+        app:layout_constraintBottom_toTopOf="@id/nav_viewP"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:text="INBOX"
+            android:text="PROFILE"
             android:textSize="26sp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_viewI"
+        android:id="@+id/nav_viewP"
         android:layout_width="match_parent"
         app:labelVisibilityMode="unlabeled"
         android:layout_height="wrap_content"
