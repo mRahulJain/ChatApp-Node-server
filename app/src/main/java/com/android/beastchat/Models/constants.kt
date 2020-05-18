@@ -7,4 +7,6 @@ class constants {
     val USER_NAME : String = "USER_NAME"
     val USER_PICTURE : String = "USER_PICTURE"
 
+    val FIREBASE_USERS_PATH = "users"
+
 }

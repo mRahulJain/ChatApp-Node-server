@@ -5,9 +5,18 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:layout_height="match_parent">
-    <TextView
-        android:textSize="26sp"
-        android:text="Find Friends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/fragment_find_friends_searchBar"
+        android:layout_width="match_parent"
+        android:hint="Find Friend By Email"
+        android:drawableLeft="@drawable/ic_search"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:drawablePadding="10dp"
+        android:background="@drawable/search_bar_background"
+        android:layout_height="40dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_find_friends_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

@@ -51,11 +51,13 @@ dependencies {
     implementation('io.socket:socket.io-client:1.0.0') {
         exclude group: 'org.json', module: 'json'
     }
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.jakewharton:butterknife:10.2.1'
     kapt 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }
