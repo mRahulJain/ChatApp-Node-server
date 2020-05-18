@@ -5,19 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout
+    <RelativeLayout
         android:layout_weight="1"
         android:id="@+id/frag"
         app:layout_constraintBottom_toTopOf="@id/nav_viewF"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:text="FRIENDS"
-            android:textSize="26sp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/fragment_friends_tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"/>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/fragment_friends_viewPager"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/fragment_friends_tabLayout"
             android:layout_height="wrap_content"/>
-    </FrameLayout>
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_viewF"
