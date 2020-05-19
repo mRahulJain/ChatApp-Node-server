@@ -11,17 +11,25 @@ import com.android.beastchat.Fragments.FindFriendsFragment
 import com.android.beastchat.R
 
 class FindFriendsAdapter() : RecyclerView.Adapter<FindFriendsViewHolder>() {
+    private lateinit var mActivity : BaseFragmentActivity
+    private lateinit var mUsers : ArrayList<User>
+    private lateinit var mInflater : LayoutInflater
+    private lateinit var mListener : UserListener
+    private lateinit var mFriendRequestSentMap : HashMap<String, User>
+
     constructor(mActivity: BaseFragmentActivity, mListener: UserListener) : this() {
         this.mActivity = mActivity
         this.mListener = mListener
         mInflater = mActivity.layoutInflater
         mUsers = arrayListOf()
+        mFriendRequestSentMap = HashMap()
     }
 
-    private lateinit var mActivity : BaseFragmentActivity
-    private lateinit var mUsers : ArrayList<User>
-    private lateinit var mInflater : LayoutInflater
-    private lateinit var mListener : UserListener
+    fun setmFriendRequestSentMap(friendRequestSentMap : HashMap<String, User>) {
+        this.mFriendRequestSentMap.clear()
+        this.mFriendRequestSentMap.putAll(friendRequestSentMap)
+        notifyDataSetChanged()
+    }
 
     fun setmUsers(users: List<User>) {
         mUsers.clear()
@@ -44,7 +52,7 @@ class FindFriendsAdapter() : RecyclerView.Adapter<FindFriendsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FindFriendsViewHolder, position: Int) {
-        (holder).populate(mActivity, mUsers[position])
+        (holder).populate(mActivity, mUsers[position], mFriendRequestSentMap)
     }
 
 
