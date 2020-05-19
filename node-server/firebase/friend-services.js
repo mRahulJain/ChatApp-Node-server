@@ -18,7 +18,7 @@ function sendOrDeleteFriendRequest(socket, io) {
     var requestCode = data.requestCode;
 
     var db = admin.database();
-    var friendRef = db.ref('friendRequestRecieved')
+    var friendRef = db.ref('friendRequestReceived')
     .child(encodeEmail(friendEmail))
     .child(encodeEmail(userEmail));
 

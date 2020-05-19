@@ -16,6 +16,7 @@ class FindFriendsAdapter() : RecyclerView.Adapter<FindFriendsViewHolder>() {
     private lateinit var mInflater : LayoutInflater
     private lateinit var mListener : UserListener
     private lateinit var mFriendRequestSentMap : HashMap<String, User>
+    private lateinit var mFriendRequestReceivedMap : HashMap<String, User>
 
     constructor(mActivity: BaseFragmentActivity, mListener: UserListener) : this() {
         this.mActivity = mActivity
@@ -23,11 +24,17 @@ class FindFriendsAdapter() : RecyclerView.Adapter<FindFriendsViewHolder>() {
         mInflater = mActivity.layoutInflater
         mUsers = arrayListOf()
         mFriendRequestSentMap = HashMap()
+        mFriendRequestReceivedMap = HashMap()
     }
 
     fun setmFriendRequestSentMap(friendRequestSentMap : HashMap<String, User>) {
         this.mFriendRequestSentMap.clear()
         this.mFriendRequestSentMap.putAll(friendRequestSentMap)
+        notifyDataSetChanged()
+    }
+    fun setmFriendRequestRecievedMap(friendRequestReceivedMap : HashMap<String, User>) {
+        this.mFriendRequestReceivedMap.clear()
+        this.mFriendRequestReceivedMap.putAll(friendRequestReceivedMap)
         notifyDataSetChanged()
     }
 
@@ -52,7 +59,7 @@ class FindFriendsAdapter() : RecyclerView.Adapter<FindFriendsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FindFriendsViewHolder, position: Int) {
-        (holder).populate(mActivity, mUsers[position], mFriendRequestSentMap)
+        (holder).populate(mActivity, mUsers[position], mFriendRequestSentMap, mFriendRequestReceivedMap)
     }
 
 

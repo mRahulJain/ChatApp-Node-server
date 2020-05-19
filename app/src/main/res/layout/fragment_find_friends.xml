@@ -3,7 +3,6 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center"
     android:layout_height="match_parent">
     <EditText
         android:id="@+id/fragment_find_friends_searchBar"
@@ -19,4 +18,13 @@
         android:id="@+id/fragment_find_friends_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/fragment_find_friends_noResults"
+        android:text="No such user found"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

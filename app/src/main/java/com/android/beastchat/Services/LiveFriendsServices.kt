@@ -16,6 +16,7 @@ import io.socket.client.Socket
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class LiveFriendsServices {
@@ -92,7 +93,39 @@ class LiveFriendsServices {
             }
 
         }
-
         return listener
+    }
+    fun getFriendRequestsReceived(adapter: FindFriendsAdapter) : ValueEventListener {
+        var userHashMap : HashMap<String, User> = HashMap()
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                userHashMap.clear()
+                for(snap in p0.children) {
+                    val user = snap.getValue(User::class.java)
+                    userHashMap[user!!.email] = user
+                }
+
+                adapter.setmFriendRequestRecievedMap(userHashMap)
+            }
+
+        }
+        return listener
+    }
+
+    fun getMatchingUsers(mUsers : ArrayList<User>, userEmail: String?) : ArrayList<User> {
+        if(userEmail!!.isEmpty()) {
+            return mUsers
+        }
+        val searchedList : ArrayList<User> = arrayListOf()
+        for(user in mUsers) {
+            if((user!!.email.toLowerCase()).startsWith(userEmail.toLowerCase())) {
+                searchedList.add(user)
+            }
+        }
+        return searchedList
     }
 }
