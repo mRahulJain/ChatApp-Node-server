@@ -3,11 +3,18 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center"
     android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_friend_requests_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <TextView
-        android:textSize="26sp"
-        android:text="Your requests"
+        android:id="@+id/fragment_friend_requests_noResults"
+        android:text="No requests found"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>

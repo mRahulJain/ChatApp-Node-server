@@ -1,9 +1,13 @@
 package com.android.beastchat.Services
 
 import android.util.Log
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Fragments.FindFriendsFragment
 import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
+import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -72,6 +76,75 @@ class LiveFriendsServices {
 
             })
         return mDisposable
+    }
+
+    fun approveDeclineFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String, requestCode: String): Disposable {
+        val details = arrayListOf<String>()
+        details.add(friendsEmail)
+        details.add(userEmail!!)
+        details.add(requestCode)
+        val listObservable = Observable.just(details)
+        lateinit var mDisposable: Disposable
+
+        listObservable
+            .subscribeOn(Schedulers.io())
+            .map {
+                val sendData = JSONObject()
+                try {
+                    sendData.put("friendEmail", it[0])
+                    sendData.put("userEmail", it[1])
+                    sendData.put("requestCode", it[2])
+                    socket.emit("friendRequestResponse", sendData)
+                    SERVER_SUCCESS
+                } catch (e: JSONException) {
+                    Log.d("myERROR", e.localizedMessage)
+                    SERVER_FALIURE
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int> {
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable?) {
+                    if (d != null) {
+                        mDisposable = d
+                    }
+                }
+
+                override fun onNext(t: Int?) {
+                }
+
+                override fun onError(e: Throwable?) {
+                }
+
+            })
+        return mDisposable
+    }
+
+    fun getAllFriendRequests(adapter: FriendRequestsAdapter, recyclerView: RecyclerView, textView: TextView): ValueEventListener {
+        var mUsers = arrayListOf<User>()
+        var listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                mUsers.clear()
+                for(snap in p0.children) {
+                    val user = snap.getValue(User::class.java)
+                    mUsers.add(user!!)
+                }
+                if(mUsers.isEmpty()) {
+                    recyclerView.isVisible = false
+                    textView.isVisible = true
+                } else {
+                    recyclerView.isVisible = true
+                    textView.isVisible = false
+                    adapter.setmUsers(mUsers)
+                }
+            }
+        }
+        return listener
     }
 
     fun getFriendRequestsSent(adapter: FindFriendsAdapter, fragment : FindFriendsFragment) : ValueEventListener {
