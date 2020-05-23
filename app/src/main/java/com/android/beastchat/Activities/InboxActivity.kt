@@ -6,10 +6,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.android.beastchat.Fragments.InboxFragment
 import com.android.beastchat.Models.constants
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessagingService
 
 class InboxActivity : BaseFragmentActivity() {
     override fun createFragment(): Fragment {

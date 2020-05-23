@@ -195,7 +195,8 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
                 mAllUsers.clear()
                 for(data in p0.children) {
                     val mUser = data.getValue(User::class.java)
-                    if(mUser!!.email != mUserEmailString && mUser!!.hasLoggedIn) {
+                    //it should not matter whether the user is logged in or not
+                    if(mUser!!.email != mUserEmailString) {
                         mAllUsers.add(mUser)
                     }
                     adapter.setmUsers(mAllUsers)
