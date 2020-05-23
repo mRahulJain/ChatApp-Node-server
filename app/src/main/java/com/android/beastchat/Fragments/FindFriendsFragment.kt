@@ -58,6 +58,9 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
     private lateinit var mGetAllFriendRequestsReceivedReference : DatabaseReference
     private lateinit var mGetAllFriendRequestsReceivedListener : ValueEventListener
 
+    private lateinit var mGetAllCurrentUserFriendsReference : DatabaseReference
+    private lateinit var mGetAllCurrentUserFriendsListener : ValueEventListener
+
     lateinit var mFriendRequestSentMap : HashMap<String, User>
     private lateinit var mSocket: Socket
 
@@ -119,6 +122,12 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
 
         mCompositeDisposable.add(createSearchBarDisposable())
         mListenToSearchBar()
+
+        mGetAllCurrentUserFriendsListener = mLiveFriendsServices.getAllCurrentUsersFriendsMap(mAdapter)
+        mGetAllCurrentUserFriendsReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_FRIENDS)
+            .child(constants().encodeEmail(mUserEmailString))
+        mGetAllCurrentUserFriendsReference.addValueEventListener(mGetAllCurrentUserFriendsListener)
 
         return rootView
     }
@@ -208,6 +217,9 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
         }
         if(mGetAllFriendRequestsReceivedListener != null) {
             mGetAllFriendRequestsReceivedReference.removeEventListener(mGetAllFriendRequestsReceivedListener)
+        }
+        if(mGetAllCurrentUserFriendsListener != null) {
+            mGetAllCurrentUserFriendsReference.removeEventListener(mGetAllCurrentUserFriendsListener)
         }
     }
 

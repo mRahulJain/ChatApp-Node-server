@@ -8,6 +8,7 @@ import com.android.beastchat.Entities.User
 import com.android.beastchat.Fragments.FindFriendsFragment
 import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
 import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
+import com.android.beastchat.Views.FriendViews.FriendAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -183,6 +184,51 @@ class LiveFriendsServices {
                 }
 
                 adapter.setmFriendRequestRecievedMap(userHashMap)
+            }
+
+        }
+        return listener
+    }
+
+    fun getAllCurrentUsersFriendsMap(adapter: FindFriendsAdapter) : ValueEventListener {
+        val friendHashMap = HashMap<String, User>()
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                friendHashMap.clear()
+                for(snap in p0.children) {
+                    val friend = snap.getValue(User::class.java)
+                    friendHashMap.put(friend!!.email, friend)
+                }
+                adapter.setmCurrentUserFriends(friendHashMap)
+            }
+
+        }
+        return listener
+    }
+
+    fun getAllFriendsListener(adapter: FriendAdapter, recyclerView: RecyclerView,textView: TextView) : ValueEventListener {
+        val mAllFriends = arrayListOf<User>()
+        val listener = object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                mAllFriends.clear()
+                for(snap in p0.children) {
+                    val friend = snap.getValue(User::class.java)
+                    mAllFriends.add(friend!!)
+                }
+                adapter.setmUser(mAllFriends)
+                if(mAllFriends.isEmpty()) {
+                    recyclerView.isVisible = false
+                    textView.isVisible = true
+                } else {
+                    recyclerView.isVisible = true
+                    textView.isVisible = false
+                }
             }
 
         }

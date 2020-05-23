@@ -32,7 +32,12 @@ class FindFriendsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         ButterKnife.bind(this, itemView)
     }
 
-    fun populate(context: Context, user: User, mFriendRequestSentMap : HashMap<String, User>, mFriendRequestReceivedMap : HashMap<String, User>) {
+    fun populate(
+        context: Context,
+        user: User, mFriendRequestSentMap : HashMap<String, User>,
+        mFriendRequestReceivedMap : HashMap<String, User>,
+        mCurrentUserFriends: HashMap<String, User>
+    ) {
         itemView.tag = user
         mUsername.text = user!!.username
         Picasso.with(context)
@@ -48,6 +53,10 @@ class FindFriendsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             mAddFriend.isVisible = false
             mUserStatus.isVisible = true
             mUserStatus.text = "This user has requested you"
+        } else if(constants().isIncludedInMap(mCurrentUserFriends, user)){
+            mUserStatus.isVisible = true
+            mAddFriend.isVisible = false
+            mUserStatus.text = "Added as Friend"
         } else {
             mAddFriend.isVisible = true
             mUserStatus.isVisible = false

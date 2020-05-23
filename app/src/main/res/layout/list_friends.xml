@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/list_friends_userPicture"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="30dip"
+        app:riv_border_width="3dip"
+        app:riv_border_color="#333333"
+        app:riv_oval="true"
+        android:layout_width="55dp"
+        android:layout_height="55dp"/>
+    <TextView
+        android:id="@+id/list_friends_userName"
+        android:text="Rahul Jain"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="3dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:id="@+id/list_friends_startChat"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_sms"
+        android:padding="5dp"
+        android:background="@drawable/friend_request_approved"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+</LinearLayout>
