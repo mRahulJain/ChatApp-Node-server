@@ -10,6 +10,7 @@ import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.InboxActivity
 import com.android.beastchat.Models.constants
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
@@ -19,6 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import kotlin.collections.ArrayList
 
 class LiveAccountServices {
@@ -80,6 +82,18 @@ class LiveAccountServices {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                        }
+                        try {
+                            FirebaseInstanceId.getInstance().deleteInstanceId()
+                            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+                                if(!it.isSuccessful) {
+                                    Log.e("myError", "An error has occurred")
+                                    return@addOnCompleteListener
+                                }
+                                it.result!!.token
+                            }
+                        } catch (e: IOException) {
+                            Log.e("myError", "${e.localizedMessage}")
                         }
                         FirebaseAuth.getInstance().signOut()
                         USER_NO_ERRORS

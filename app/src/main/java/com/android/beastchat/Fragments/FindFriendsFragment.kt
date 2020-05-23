@@ -195,7 +195,7 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
                 mAllUsers.clear()
                 for(data in p0.children) {
                     val mUser = data.getValue(User::class.java)
-                    if(mUser!!.email != mUserEmailString) {
+                    if(mUser!!.email != mUserEmailString && mUser!!.hasLoggedIn) {
                         mAllUsers.add(mUser)
                     }
                     adapter.setmUsers(mAllUsers)

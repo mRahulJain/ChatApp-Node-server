@@ -33,6 +33,8 @@ function logUserIn(socket, io) {
                 photo: snapshot.val().userPicture,
                 displayName: snapshot.val().username
               }
+
+              userRef.child('hasLoggedIn').set(true);
               socket.emit('token', token);
             }
           });
