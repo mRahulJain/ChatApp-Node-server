@@ -43,8 +43,27 @@ function approveOrDeclineFriendRequest(socket, io) {
           userPicture: snapshot.val().userPicture,
           dateJoined: snapshot.val().dateJoined,
           hasLoggedIn: snapshot.val().hasLoggedIn,
-        })
-      })
+        });
+      });
+
+      var tokenRef = db.ref('userToken');
+      var friendToken = tokenRef.child(encodeEmail(friendEmail));
+
+      friendToken.once('value', (snapshot)=> {
+        var message = {
+          to:snapshot.val().token,
+          data:{
+            title: 'Friend Request Accepted',
+            body: `Your request has been accepted by ${userEmail}`
+          }
+        };
+        fcm.send(message)
+        .then((response)=> {
+          console.log('Message Sent!');
+        }).catch((err)=>{
+          console.log(err);
+        });
+      });
     } else {
 
     }
@@ -84,8 +103,8 @@ function sendOrDeleteFriendRequest(socket, io) {
         var message = {
           to:snapshot.val().token,
           data:{
-            title: 'Beast Chat',
-            body: `Friend request from ${userEmail}`
+            title: 'Friend Request',
+            body: `You have recieved a new friend request from ${userEmail}`
           }
         };
         fcm.send(message)

@@ -7,16 +7,32 @@ import android.view.ViewGroup
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.android.beastchat.Services.LiveFriendsServices
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ProfileFragment : BaseFragments() {
+    private lateinit var mLiveFriendsServices: LiveFriendsServices
+    private lateinit var mUnbinder: Unbinder
+
+    private lateinit var mAllFriendRequestsListener: ValueEventListener
+    private lateinit var mAllFriendRequestsReference: DatabaseReference
+    private lateinit var mUserEmailString: String
+
     fun newInstant() : ProfileFragment {
         return ProfileFragment()
     }
 
-    private lateinit var mUnbinder: Unbinder
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mLiveFriendsServices = LiveFriendsServices().getInstant()
+        mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +45,23 @@ class ProfileFragment : BaseFragments() {
         nav.id = R.id.tab_profile
         setUpBottomBar(nav, 3)
         nav.selectedItemId = R.id.tab_profile
+
+        mAllFriendRequestsListener = mLiveFriendsServices
+            .getFriendRequestBottom(nav, 0, activity!!)
+        mAllFriendRequestsReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_FRIEND_REQUEST_RECEIVED_PATH)
+            .child(constants().encodeEmail(mUserEmailString))
+        mAllFriendRequestsReference.addValueEventListener(mAllFriendRequestsListener)
+
         return rootView
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         mUnbinder.unbind()
+
+        if(mAllFriendRequestsListener != null) {
+            mAllFriendRequestsReference.removeEventListener(mAllFriendRequestsListener)
+        }
     }
 }

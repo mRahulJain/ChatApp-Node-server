@@ -1,14 +1,22 @@
 package com.android.beastchat.Services
 
+import android.content.Context
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Fragments.FindFriendsFragment
+import com.android.beastchat.R
 import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
 import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.android.beastchat.Views.FriendViews.FriendAdapter
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -18,6 +26,7 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.badge_layout.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
@@ -26,7 +35,7 @@ import kotlin.collections.HashMap
 
 class LiveFriendsServices {
     private lateinit var mLiveFriendsServices: LiveFriendsServices
-
+    var notificationsBadge : View?  = null
     private var SERVER_SUCCESS = 6
     private var SERVER_FALIURE = 7
 
@@ -233,6 +242,55 @@ class LiveFriendsServices {
 
         }
         return listener
+    }
+
+    fun getFriendRequestBottom(bottomNavigationView: BottomNavigationView, tagId: Int, context: Context): ValueEventListener{
+        val users = arrayListOf<User>()
+        val listener = object: ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                users.clear()
+                for(snap in p0.children) {
+                    val user = snap.getValue(User::class.java)
+                    users.add(user!!)
+                }
+                if(!users.isEmpty()) {
+                    addBadge(
+                        bottomNavigationView,
+                        tagId,
+                        users!!.size.toString(),
+                        context
+                    )
+                } else {
+                    removeBadge(bottomNavigationView)
+                }
+            }
+
+        }
+        return listener
+    }
+
+    private fun getBadge(bottomNavigationView: BottomNavigationView, index: Int, context: Context) : View {
+        if (notificationsBadge != null){
+            return notificationsBadge!!
+        }
+        val mbottomNavigationMenuView = bottomNavigationView.getChildAt(index) as BottomNavigationMenuView
+        notificationsBadge = LayoutInflater.from(context).inflate(
+            R.layout.badge_layout,
+            mbottomNavigationMenuView,false)
+        return notificationsBadge!!
+    }
+
+    private fun addBadge(bottomNavigationView: BottomNavigationView, index: Int, count : String, context: Context) {
+        notificationsBadge = getBadge(bottomNavigationView, index, context)
+        notificationsBadge?.notifications_badge?.text = count
+        bottomNavigationView?.addView(notificationsBadge)
+    }
+
+    private fun removeBadge(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.removeView(notificationsBadge)
     }
 
     fun getMatchingUsers(mUsers : ArrayList<User>, userEmail: String?) : ArrayList<User> {

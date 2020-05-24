@@ -43,10 +43,6 @@ class FriendRequestMessagingService : FirebaseMessagingService() {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            nm.createNotificationChannel(
-//                NotificationChannel("first","FriendRequest",
-//                    NotificationManager.IMPORTANCE_HIGH)
-//            )
             val importance = NotificationManager.IMPORTANCE_HIGH
             var mChannel = nm.getNotificationChannel("first")
             if(mChannel == null) {
@@ -67,7 +63,8 @@ class FriendRequestMessagingService : FirebaseMessagingService() {
             .setLights(Color.BLUE, 1, 1)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setAutoCancel(true)
 
         nm.notify(0, clickableNotification.build())
     }
