@@ -13,6 +13,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Activities.MessagesActivity
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
@@ -76,10 +77,13 @@ class UserFriendsFragment : BaseFragments(), FriendAdapter.userClickedListener {
     }
 
     override fun onMessageClick(user: User) {
-        Toast.makeText(
-            activity,
-            "${user!!.username} is clicked",
-            Toast.LENGTH_SHORT
-        ).show()
+        val friendList = arrayListOf<String>(
+            user!!.email,
+            user!!.userPicture,
+            user!!.username
+        )
+        val intent = MessagesActivity()!!.newInstant(activity!!, friendList)
+        startActivity(intent)
+        activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

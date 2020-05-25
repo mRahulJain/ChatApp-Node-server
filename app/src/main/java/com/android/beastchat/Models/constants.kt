@@ -14,6 +14,8 @@ class constants {
     val FIREBASE_FRIEND_REQUEST_RECEIVED_PATH = "friendRequestReceived"
     val FIREBASE_PATH_USER_FRIENDS = "userFriends"
     val FIREBASE_PATH_USERTOKEN = "userToken"
+    val FIREBASE_PATH_USER_MESSAGES = "userMessages"
+    val FIREBASE_PATH_USER_NEW_MESSAGES = "userNewMessages"
 
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")

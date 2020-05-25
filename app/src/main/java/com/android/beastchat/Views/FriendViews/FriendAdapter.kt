@@ -18,7 +18,6 @@ class FriendAdapter() : RecyclerView.Adapter<FriendViewHolder>() {
         this.mListener = mListener
         this.mUsers = arrayListOf()
         this.mInflater = mActivity.layoutInflater
-
     }
 
     fun setmUser(users: List<User>) {

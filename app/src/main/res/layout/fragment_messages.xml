@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_messages_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="match_parent"/>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/fragment_messages_friendPicture"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="30dip"
+        android:visibility="gone"
+        app:riv_border_width="3dip"
+        app:riv_border_color="#333333"
+        app:riv_oval="true"
+        android:layout_centerInParent="true"
+        android:layout_width="120dp"
+        android:layout_height="120dp"/>
+    <TextView
+        android:layout_below="@+id/fragment_messages_friendPicture"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="Rahul Jain"
+        android:id="@+id/fragment_messages_friendName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_margin="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/fragment_messages_recyclerView"
+        android:orientation="horizontal"
+        android:background="#E1F5FE"
+        android:layout_height="60dp">
+        <EditText
+            android:id="@+id/fragment_messages_messageBox"
+            android:hint="Type your message"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <ImageView
+            android:id="@+id/fragment_messages_sendMessage"
+            android:padding="10dp"
+            android:src="@drawable/ic_send"
+            android:background="@drawable/friend_request_approved"
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
+</RelativeLayout>

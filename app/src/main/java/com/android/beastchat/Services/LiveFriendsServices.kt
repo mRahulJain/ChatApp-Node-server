@@ -4,22 +4,26 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Entities.Message
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Fragments.FindFriendsFragment
 import com.android.beastchat.R
 import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
 import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.android.beastchat.Views.FriendViews.FriendAdapter
+import com.android.beastchat.Views.MessageViews.MessagesAdapter
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.makeramen.roundedimageview.RoundedImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
@@ -42,6 +46,79 @@ class LiveFriendsServices {
     fun getInstant(): LiveFriendsServices{
         mLiveFriendsServices = LiveFriendsServices()
         return mLiveFriendsServices
+    }
+
+    fun sendMessage(socket: Socket, messageSenderEmail: String, messageSenderPicture: String, message: String, friendEmail: String): Disposable {
+        val details = arrayListOf<String>()
+        details.add(messageSenderEmail)
+        details.add(messageSenderPicture)
+        details.add(message)
+        details.add(friendEmail)
+        lateinit var mDisposable: Disposable
+        val messageObservable = Observable.just(details)
+        messageObservable.subscribeOn(Schedulers.io())
+            .map {
+                val sendData = JSONObject()
+                try {
+                    sendData.put("senderEmail", it[0])
+                    sendData.put("senderPicture", it[1])
+                    sendData.put("messageText", it[2])
+                    sendData.put("friendEmail", it[3])
+                    socket.emit("details", sendData)
+                    SERVER_SUCCESS
+                } catch (e: JSONException) {
+                    Log.e("myError", e.localizedMessage)
+                    SERVER_FALIURE
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int>{
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable?) {
+                    if (d != null) {
+                        mDisposable = d
+                    }
+                }
+
+                override fun onNext(t: Int?) {
+                }
+
+                override fun onError(e: Throwable?) {
+                }
+
+            })
+        return mDisposable
+    }
+
+    fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter) : ValueEventListener{
+        val listMessages = arrayListOf<Message>()
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                listMessages.clear()
+                for(snap in p0.children) {
+                    val message = snap.getValue(Message::class.java)
+                    listMessages.add(message!!)
+                }
+                if(listMessages.isEmpty()) {
+                    recyclerView.isVisible = false
+                    textView.isVisible = true
+                    imageView.isVisible = true
+                } else {
+                    recyclerView.isVisible = true
+                    textView.isVisible = false
+                    imageView.isVisible = false
+                    messagesAdapter.setmMessages(listMessages)
+                }
+            }
+
+        }
+
+        return listener
     }
 
     fun addOrRemoveFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String, requestCode: String): Disposable {
