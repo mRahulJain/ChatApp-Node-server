@@ -4,19 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Activities.MessagesActivity
+import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
+import com.android.beastchat.Views.ChatRoomViews.ChatRoomAdapter
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class InboxFragment : BaseFragments() {
+class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
 
     private lateinit var mLiveFriendsServices: LiveFriendsServices
     private lateinit var mUnbinder: Unbinder
@@ -25,6 +32,13 @@ class InboxFragment : BaseFragments() {
     private lateinit var mAllFriendRequestsReference: DatabaseReference
     private lateinit var mUserEmailString: String
 
+    @BindView(R.id.fragment_inbox_recyclerView)
+    lateinit var mRecyclerView: RecyclerView
+    @BindView(R.id.fragment_inbox_noMessages)
+    lateinit var mNoMessages: TextView
+
+    private lateinit var mUserChatRoomReference: DatabaseReference
+    private lateinit var mUserChatRoomListener: ValueEventListener
 
     fun newInstant() : InboxFragment {
         return InboxFragment()
@@ -54,6 +68,15 @@ class InboxFragment : BaseFragments() {
             .child(constants().encodeEmail(mUserEmailString))
         mAllFriendRequestsReference.addValueEventListener(mAllFriendRequestsListener)
 
+        val adapter = ChatRoomAdapter(activity!! as BaseFragmentActivity, this, mUserEmailString)
+        mRecyclerView.layoutManager = LinearLayoutManager(activity)
+        mUserChatRoomReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
+            .child(constants().encodeEmail(mUserEmailString))
+        mUserChatRoomListener = mLiveFriendsServices.getAllChatRooms(mRecyclerView, mNoMessages, adapter)
+        mUserChatRoomReference.addValueEventListener(mUserChatRoomListener)
+        mRecyclerView.adapter = adapter
+
         return rootView
     }
 
@@ -64,6 +87,21 @@ class InboxFragment : BaseFragments() {
         if(mAllFriendRequestsListener != null) {
             mAllFriendRequestsReference.removeEventListener(mAllFriendRequestsListener)
         }
+
+        if(mUserChatRoomListener != null) {
+            mUserChatRoomReference.removeEventListener(mUserChatRoomListener)
+        }
+    }
+
+    override fun onChatRoomClicked(chatRoom: ChatRoom) {
+        val friendList = arrayListOf<String>(
+            chatRoom!!.friendEmail,
+            chatRoom!!.friendPicture,
+            chatRoom!!.friendName
+        )
+        val intent = MessagesActivity()!!.newInstant(activity!!, friendList)
+        startActivity(intent)
+        activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
 }

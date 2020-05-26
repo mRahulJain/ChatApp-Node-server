@@ -5,24 +5,34 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.Message
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.google.firebase.database.FirebaseDatabase
 
 class MessagesAdapter() : RecyclerView.Adapter<MessagesViewHolder>() {
     private lateinit var mActivity : BaseFragmentActivity
     private lateinit var mMessages : ArrayList<Message>
     private lateinit var mInflater : LayoutInflater
     private lateinit var mCurrentUserEmail: String
+    private lateinit var mFriendEmailString: String
 
-    constructor(mActivity: BaseFragmentActivity, mCurrentUserEmail: String): this() {
+    constructor(mActivity: BaseFragmentActivity, mCurrentUserEmail: String, mFriendEmailString: String): this() {
         this.mActivity = mActivity
         this.mCurrentUserEmail = mCurrentUserEmail
         mMessages = arrayListOf()
         mInflater = mActivity.layoutInflater
+        this.mFriendEmailString = mFriendEmailString
     }
 
     fun setmMessages(messages: List<Message>) {
         mMessages.clear()
         mMessages.addAll(messages)
+        var lastReadRef = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
+            .child(constants().encodeEmail(mCurrentUserEmail))
+            .child(constants().encodeEmail(mFriendEmailString))
+            .child("lastMessageRead")
+        lastReadRef.setValue(true)
         notifyDataSetChanged()
     }
 
@@ -36,7 +46,11 @@ class MessagesAdapter() : RecyclerView.Adapter<MessagesViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) {
-        holder.populate(mActivity, mMessages[position], mCurrentUserEmail)
+        if(position == mMessages.size - 1) {
+            holder.populate(mActivity, mMessages[position], mCurrentUserEmail, mFriendEmailString, true)
+        } else {
+            holder.populate(mActivity, mMessages[position], mCurrentUserEmail, mFriendEmailString, false)
+        }
     }
 
 }

@@ -9,10 +9,13 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.Entities.Message
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Fragments.FindFriendsFragment
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.android.beastchat.Views.ChatRoomViews.ChatRoomAdapter
 import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
 import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.android.beastchat.Views.FriendViews.FriendAdapter
@@ -22,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.makeramen.roundedimageview.RoundedImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -48,12 +52,22 @@ class LiveFriendsServices {
         return mLiveFriendsServices
     }
 
-    fun sendMessage(socket: Socket, messageSenderEmail: String, messageSenderPicture: String, message: String, friendEmail: String): Disposable {
+    fun sendMessage(
+        socket: Socket,
+        messageId: String,
+        messageSenderEmail: String,
+        messageSenderPicture: String,
+        message: String,
+        friendEmail: String,
+        messageSenderName: String
+    ): Disposable {
         val details = arrayListOf<String>()
         details.add(messageSenderEmail)
         details.add(messageSenderPicture)
         details.add(message)
         details.add(friendEmail)
+        details.add(messageId)
+        details.add(messageSenderName)
         lateinit var mDisposable: Disposable
         val messageObservable = Observable.just(details)
         messageObservable.subscribeOn(Schedulers.io())
@@ -64,6 +78,8 @@ class LiveFriendsServices {
                     sendData.put("senderPicture", it[1])
                     sendData.put("messageText", it[2])
                     sendData.put("friendEmail", it[3])
+                    sendData.put("messageId", it[4])
+                    sendData.put("senderName", it[5])
                     socket.emit("details", sendData)
                     SERVER_SUCCESS
                 } catch (e: JSONException) {
@@ -92,6 +108,24 @@ class LiveFriendsServices {
         return mDisposable
     }
 
+    fun isSeenMessage(textView: TextView, mCurrentUserEmail: String, mFriendEmailString: String) {
+        var mSeenRef = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
+            .child(constants().encodeEmail(mFriendEmailString))
+            .child(constants().encodeEmail(mCurrentUserEmail))
+            .child("lastMessageRead")
+        mSeenRef.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if(p0.exists()) {
+                    textView.isVisible = p0.value == true
+                }
+            }
+        })
+    }
+
     fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter) : ValueEventListener{
         val listMessages = arrayListOf<Message>()
         val listener = object : ValueEventListener {
@@ -110,6 +144,7 @@ class LiveFriendsServices {
                     imageView.isVisible = true
                 } else {
                     recyclerView.isVisible = true
+                    recyclerView.scrollToPosition(listMessages.size - 1)
                     textView.isVisible = false
                     imageView.isVisible = false
                     messagesAdapter.setmMessages(listMessages)
@@ -118,6 +153,32 @@ class LiveFriendsServices {
 
         }
 
+        return listener
+    }
+
+    fun getAllChatRooms(recyclerView: RecyclerView, textView: TextView, chatRoomAdapter: ChatRoomAdapter): ValueEventListener {
+        val listRooms = arrayListOf<ChatRoom>()
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                listRooms.clear()
+                for(snap in p0.children) {
+                    val chatRoom = snap.getValue(ChatRoom::class.java)
+                    listRooms.add(chatRoom!!)
+                }
+
+                if(listRooms.isEmpty()) {
+                    recyclerView.isVisible = false
+                    textView.isVisible = true
+                } else {
+                    recyclerView.isVisible = true
+                    textView.isVisible = false
+                    chatRoomAdapter.setmChatRooms(listRooms)
+                }
+            }
+        }
         return listener
     }
 

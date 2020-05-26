@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.Message
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.android.beastchat.Services.LiveFriendsServices
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
@@ -22,13 +24,18 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     lateinit var mUserPicture: RoundedImageView
     @BindView(R.id.list_messages_userText)
     lateinit var mUserText: TextView
+    @BindView(R.id.list_messages_seenMessage)
+    lateinit var mSeenMessage: TextView
+    lateinit var mLiveFriendsServices: LiveFriendsServices
 
     init {
         ButterKnife.bind(this, itemView)
+        mLiveFriendsServices = LiveFriendsServices().getInstant()
     }
 
-    fun populate(context: Context, message: Message, mCurrentUserEmail: String) {
+    fun populate(context: Context, message: Message, mCurrentUserEmail: String, mFriendEmailString: String, toShowSeen: Boolean) {
         if(mCurrentUserEmail != message.messageSenderEmail) {
+            mSeenMessage.isVisible = false
             mUserPicture.isVisible = false
             mUserText.isVisible = false
             mFriendPicture.isVisible = true
@@ -38,6 +45,9 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .into(mFriendPicture)
             mFriendText.text = message.messageText
         } else {
+            if(toShowSeen) {
+                mLiveFriendsServices.isSeenMessage(mSeenMessage, mCurrentUserEmail, mFriendEmailString)
+            }
             mUserPicture.isVisible = true
             mUserText.isVisible = true
             mFriendPicture.isVisible = false

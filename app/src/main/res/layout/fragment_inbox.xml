@@ -11,10 +11,16 @@
         app:layout_constraintBottom_toTopOf="@id/nav_viewI"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_inbox_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <TextView
-            android:text="INBOX"
+            android:id="@+id/fragment_inbox_noMessages"
+            android:text="No messages yet!"
             android:textSize="26sp"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </FrameLayout>

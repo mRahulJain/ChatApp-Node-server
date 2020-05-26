@@ -18,8 +18,8 @@
     <TextView
         android:id="@+id/list_messages_friendText"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
         android:textSize="18sp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_toRightOf="@+id/list_messages_friendPicture"
@@ -32,8 +32,8 @@
         android:layout_toStartOf="@+id/list_messages_userPicture"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_centerInParent="true"
         android:textSize="18sp"
+        android:layout_marginTop="15dp"
         android:id="@+id/list_messages_userText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -49,5 +49,18 @@
         app:riv_oval="true"
         android:layout_width="55dp"
         android:layout_height="55dp"/>
+    <TextView
+        android:layout_below="@id/list_messages_userPicture"
+        android:textSize="14sp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Seen"
+        android:id="@+id/list_messages_seenMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

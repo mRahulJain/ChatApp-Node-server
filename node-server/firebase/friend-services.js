@@ -23,18 +23,29 @@ function sendMessage(socket, io) {
     var friendMessageRef = db.ref('userMessages')
     .child(encodeEmail(data.friendEmail))
     .child(encodeEmail(data.senderEmail))
-    .push();
+    .child(data.messageId)
     var newFriendMessagesRef = db.ref('userNewMessages')
     .child(encodeEmail(data.friendEmail))
-    .child(friendMessageRef.key);
+    .child(data.messageId);
+
+    var chatRoomRef = db.ref('userChatRoom').child(encodeEmail(data.friendEmail)).child(encodeEmail(data.senderEmail));
 
     var message = {
-      messageId:friendMessageRef.key,
+      messageId:data.messageId,
       messageText:data.messageText,
       messageSenderEmail:data.senderEmail,
       messageSenderPicture:data.senderPicture
     };
-
+    var chatRoom = {
+      friendPicture: data.senderPicture,
+      friendName: data.senderName,
+      friendEmail: data.senderEmail,
+      lastMessage: data.messageText,
+      lastMessageSenderEmail: data.senderEmail,
+      lastMessageRead: false,
+      sentLastMessage: true
+    };
+    chatRoomRef.set(chatRoom);
     friendMessageRef.set(message);
     newFriendMessagesRef.set(message);
   });

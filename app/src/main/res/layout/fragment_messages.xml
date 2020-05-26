@@ -8,6 +8,7 @@
         android:id="@+id/fragment_messages_recyclerView"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="60dp"
         android:layout_alignParentStart="true"
         android:layout_height="match_parent"/>
 

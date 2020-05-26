@@ -17,6 +17,8 @@ class constants {
     val FIREBASE_PATH_USER_MESSAGES = "userMessages"
     val FIREBASE_PATH_USER_NEW_MESSAGES = "userNewMessages"
 
+    val FIREBASE_PATH_USER_CHATROOM = "userChatRoom"
+
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")
     }
