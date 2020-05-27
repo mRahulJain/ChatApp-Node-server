@@ -402,7 +402,6 @@ class LiveFriendsServices {
                     users.add(user!!)
                 }
                 if(!users.isEmpty()) {
-                    Log.d("myBottom", "getFriendRequestBottom not empty")
                     addBadge(
                         bottomNavigationView,
                         tagId,
@@ -410,7 +409,6 @@ class LiveFriendsServices {
                         context
                     )
                 } else {
-                    Log.d("myBottom", "getFriendRequestBottom empty")
                     removeBadge()
                 }
             }
@@ -433,7 +431,6 @@ class LiveFriendsServices {
                 }
 
                 if(newMessages.isNotEmpty()) {
-                    Log.d("myBottom", "getAllNewMessages not empty")
                     addBadge(
                         bottomNavigationView,
                         tagId,
@@ -441,7 +438,6 @@ class LiveFriendsServices {
                         context
                     )
                 } else {
-                    Log.d("myBottom", "getAllNewMessages empty")
                     removeBadge()
                 }
             }
@@ -458,13 +454,11 @@ class LiveFriendsServices {
         var mBottomNavigationMenuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
         when(index) {
             R.id.tab_friends -> {
-                Log.d("myBottom", "I am TAB FRIENDS")
                 val view = mBottomNavigationMenuView!!.getChildAt(1)
                 mBottomNavigationItemView = view as BottomNavigationItemView
                 true
             }
             R.id.tab_inbox -> {
-                Log.d("myBottom", "I am TAB INBOX")
                 val view = mBottomNavigationMenuView!!.getChildAt(0)
                 mBottomNavigationItemView = view as BottomNavigationItemView
                 true

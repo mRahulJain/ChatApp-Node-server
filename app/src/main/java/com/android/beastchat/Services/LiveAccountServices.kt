@@ -1,16 +1,32 @@
 package com.android.beastchat.Services
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.InboxActivity
 import com.android.beastchat.Models.constants
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
@@ -20,6 +36,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlin.collections.ArrayList
 
@@ -39,6 +57,67 @@ class LiveAccountServices {
     fun getInstant() : LiveAccountServices {
         mLiveAccountServices = LiveAccountServices()
         return mLiveAccountServices
+    }
+
+    fun changeProfilePhoto(databaseReference: DatabaseReference, storageReference: StorageReference, uri: Uri, mActivity: BaseFragmentActivity,
+                           mCurrentUserEmail: String, mImageView: ImageView, sharedPreferences: SharedPreferences) {
+
+        lateinit var mBitMap: Bitmap
+        lateinit var mScaledBitMap: Bitmap
+        var byteArrayOutputStream= ByteArrayOutputStream()
+        if(Build.VERSION.SDK_INT < 28) {
+            try {
+                mBitMap = MediaStore.Images.Media.getBitmap(
+                    mActivity.contentResolver,
+                    uri
+                )
+                val outputHeigth = (mBitMap.height * (512.0/mBitMap.width)).toInt()
+                mScaledBitMap = Bitmap.createScaledBitmap(mBitMap, 512, outputHeigth, true)
+                mScaledBitMap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+            } catch (e: IOException) {
+                Log.e("myError", e.localizedMessage)
+            }
+        } else {
+            try {
+                val source = ImageDecoder.createSource(mActivity.contentResolver, uri)
+                mBitMap = ImageDecoder.decodeBitmap(source)
+                val outputHeigth = (mBitMap.height * (512.0/mBitMap.width)).toInt()
+                mScaledBitMap = Bitmap.createScaledBitmap(mBitMap, 512, outputHeigth, true)
+                mScaledBitMap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+            } catch (e: IOException) {
+                Log.e("myError", e.localizedMessage)
+            }
+        }
+
+        val uploadTask = storageReference.putBytes(byteArrayOutputStream!!.toByteArray()!!)
+        uploadTask.addOnSuccessListener {
+
+            val uriTask = uploadTask.continueWithTask(object :
+                Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
+                override fun then(p0: Task<UploadTask.TaskSnapshot>): Task<Uri> {
+                    if(!p0.isSuccessful) {
+                        throw p0.exception!!
+                    }
+                    return storageReference.getDownloadUrl()
+                }
+
+            }).addOnCompleteListener(object : OnCompleteListener<Uri> {
+                override fun onComplete(p0: Task<Uri>) {
+                    if(p0.isSuccessful){
+                        databaseReference.setValue(p0.result.toString())
+                        sharedPreferences.edit().putString(
+                            constants().USER_PICTURE, p0.result.toString()
+                        ).apply()
+                        Picasso.with(mActivity)
+                            .load(p0.result.toString())
+                            .into(mImageView)
+                    }
+                }
+
+            })
+        }.addOnFailureListener {
+            Log.d("myCH", it.localizedMessage)
+        }
     }
 
     fun sendLoginInfo(userEmail: EditText, userPassword: EditText, socket: Socket, activity : BaseFragmentActivity?) : Disposable {

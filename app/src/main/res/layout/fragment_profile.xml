@@ -1,23 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center"
+<LinearLayout
+    android:gravity="center"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout
+    <RelativeLayout
         android:layout_weight="1"
         android:id="@+id/frag"
         app:layout_constraintBottom_toTopOf="@id/nav_viewP"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/fragment_profile_userPicture"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="3dip"
+            app:riv_border_color="#333333"
+            android:layout_centerInParent="true"
+            app:riv_oval="true"
+            android:layout_width="200dp"
+            android:layout_height="200dp"/>
         <TextView
-            android:text="PROFILE"
-            android:textSize="26sp"
-            android:layout_gravity="center"
+            android:text=""
+            android:id="@+id/fragment_profile_centerIssue"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/fragment_profile_userPicture"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_below="@+id/fragment_profile_userPicture"
+            android:id="@+id/fragment_profile_cameraPicture"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_camera"
+            android:padding="3dp"
+            android:layout_toLeftOf="@+id/fragment_profile_centerIssue"
+            android:layout_toStartOf="@+id/fragment_profile_centerIssue"
+            android:background="@drawable/friend_request_background"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ImageView
+            android:background="@drawable/friend_request_background"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_image"
+            android:padding="3dp"
+            android:layout_toRightOf="@+id/fragment_profile_centerIssue"
+            android:layout_toEndOf="@+id/fragment_profile_centerIssue"
+            android:layout_below="@+id/fragment_profile_userPicture"
+            android:id="@+id/fragment_profile_imagePicture"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text="ABC"
+            android:layout_below="@+id/fragment_profile_imagePicture"
+            android:id="@+id/fragment_profile_userName"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_below="@+id/fragment_profile_userName"
+            android:textSize="20sp"
+            android:text="abc@gmail.com"
+            android:id="@+id/fragment_profile_userEmail"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/fragment_profile_signOut"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/fragment_profile_userEmail"
+            android:layout_marginTop="20dp"
+            android:text="SIGN OUT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </FrameLayout>
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_viewP"
