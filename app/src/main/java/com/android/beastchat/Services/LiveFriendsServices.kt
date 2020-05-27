@@ -1,6 +1,7 @@
 package com.android.beastchat.Services
 
 import android.content.Context
+import android.os.Debug
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.android.beastchat.Views.FriendViews.FriendAdapter
 import com.android.beastchat.Views.MessageViews.MessagesAdapter
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
@@ -44,6 +46,7 @@ import kotlin.collections.HashMap
 class LiveFriendsServices {
     private lateinit var mLiveFriendsServices: LiveFriendsServices
     var notificationsBadge : View?  = null
+    var mBottomNavigationItemView: BottomNavigationItemView? = null
     private var SERVER_SUCCESS = 6
     private var SERVER_FALIURE = 7
 
@@ -126,7 +129,7 @@ class LiveFriendsServices {
         })
     }
 
-    fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter) : ValueEventListener{
+    fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter, userEmail: String) : ValueEventListener{
         val listMessages = arrayListOf<Message>()
         val listener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -134,8 +137,12 @@ class LiveFriendsServices {
 
             override fun onDataChange(p0: DataSnapshot) {
                 listMessages.clear()
+                val newMessagesReference = FirebaseDatabase.getInstance()
+                    .getReference().child(constants().FIREBASE_PATH_USER_NEW_MESSAGES)
+                    .child(constants().encodeEmail(userEmail))
                 for(snap in p0.children) {
                     val message = snap.getValue(Message::class.java)
+                    newMessagesReference.child(message!!.messageId).removeValue()
                     listMessages.add(message!!)
                 }
                 if(listMessages.isEmpty()) {
@@ -395,6 +402,7 @@ class LiveFriendsServices {
                     users.add(user!!)
                 }
                 if(!users.isEmpty()) {
+                    Log.d("myBottom", "getFriendRequestBottom not empty")
                     addBadge(
                         bottomNavigationView,
                         tagId,
@@ -402,7 +410,8 @@ class LiveFriendsServices {
                         context
                     )
                 } else {
-                    removeBadge(bottomNavigationView)
+                    Log.d("myBottom", "getFriendRequestBottom empty")
+                    removeBadge()
                 }
             }
 
@@ -410,25 +419,73 @@ class LiveFriendsServices {
         return listener
     }
 
+    fun getAllNewMessages(bottomNavigationView: BottomNavigationView, tagId: Int, context: Context): ValueEventListener {
+        val newMessages = arrayListOf<Message>()
+        val listener = object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                newMessages.clear()
+                for(snap in p0.children) {
+                    val message = snap.getValue(Message::class.java)
+                    newMessages.add(message!!)
+                }
+
+                if(newMessages.isNotEmpty()) {
+                    Log.d("myBottom", "getAllNewMessages not empty")
+                    addBadge(
+                        bottomNavigationView,
+                        tagId,
+                        newMessages!!.size.toString(),
+                        context
+                    )
+                } else {
+                    Log.d("myBottom", "getAllNewMessages empty")
+                    removeBadge()
+                }
+            }
+
+        }
+
+        return listener
+    }
+
     private fun getBadge(bottomNavigationView: BottomNavigationView, index: Int, context: Context) : View {
         if (notificationsBadge != null){
             return notificationsBadge!!
         }
-        val mbottomNavigationMenuView = bottomNavigationView.getChildAt(index) as BottomNavigationMenuView
+        var mBottomNavigationMenuView = bottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        when(index) {
+            R.id.tab_friends -> {
+                Log.d("myBottom", "I am TAB FRIENDS")
+                val view = mBottomNavigationMenuView!!.getChildAt(1)
+                mBottomNavigationItemView = view as BottomNavigationItemView
+                true
+            }
+            R.id.tab_inbox -> {
+                Log.d("myBottom", "I am TAB INBOX")
+                val view = mBottomNavigationMenuView!!.getChildAt(0)
+                mBottomNavigationItemView = view as BottomNavigationItemView
+                true
+            }
+        }
         notificationsBadge = LayoutInflater.from(context).inflate(
             R.layout.badge_layout,
-            mbottomNavigationMenuView,false)
+            mBottomNavigationItemView,false)
+        mBottomNavigationItemView!!.addView(notificationsBadge)
         return notificationsBadge!!
     }
 
     private fun addBadge(bottomNavigationView: BottomNavigationView, index: Int, count : String, context: Context) {
         notificationsBadge = getBadge(bottomNavigationView, index, context)
         notificationsBadge?.notifications_badge?.text = count
-        bottomNavigationView?.addView(notificationsBadge)
     }
 
-    private fun removeBadge(bottomNavigationView: BottomNavigationView) {
-        bottomNavigationView.removeView(notificationsBadge)
+    private fun removeBadge() {
+        if(mBottomNavigationItemView != null) {
+            mBottomNavigationItemView!!.removeView(notificationsBadge)
+        }
     }
 
     fun getMatchingUsers(mUsers : ArrayList<User>, userEmail: String?) : ArrayList<User> {

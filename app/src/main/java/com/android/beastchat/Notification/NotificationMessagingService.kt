@@ -1,7 +1,6 @@
 package com.android.beastchat.Notification
 
 import android.annotation.SuppressLint
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,27 +11,35 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.android.beastchat.Activities.FriendsActivity
+import com.android.beastchat.Activities.InboxActivity
 import com.android.beastchat.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class FriendRequestMessagingService : FirebaseMessagingService() {
+class NotificationMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
         var title = p0.data!!["title"]
         var body = p0.data!!["body"]
         sendNotification(title!!, body!!)
-
     }
 
     @SuppressLint("WrongConstant")
     private fun sendNotification(title: String, body: String) {
-        val intent = Intent(this, FriendsActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        val pendingIntent = PendingIntent.getActivity(
+        val intentFriendRequest = Intent(this, FriendsActivity::class.java)
+        val intentNewMessage = Intent(this, InboxActivity::class.java)
+        intentFriendRequest.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intentNewMessage.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        val pendingIntentFriendRequest = PendingIntent.getActivity(
             this,
             0,
-            intent,
+            intentFriendRequest,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val pendingIntentNewMessage= PendingIntent.getActivity(
+            this,
+            0,
+            intentNewMessage,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val pattern: Array<Long> = arrayOf(
@@ -54,17 +61,30 @@ class FriendRequestMessagingService : FirebaseMessagingService() {
                 nm.createNotificationChannel(mChannel)
             }
         }
-
-        val clickableNotification =  NotificationCompat.Builder(this, "first")
-            .setContentTitle(title)
-            .setContentText(body)
-            .setVibrate(pattern.toLongArray())
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setLights(Color.BLUE, 1, 1)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setAutoCancel(true)
+        lateinit var clickableNotification: NotificationCompat.Builder
+        if(title == "New Message") {
+            clickableNotification =  NotificationCompat.Builder(this, "first")
+                .setContentTitle(title)
+                .setContentText(body)
+                .setVibrate(pattern.toLongArray())
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLights(Color.BLUE, 1, 1)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntentNewMessage)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(true)
+        } else {
+            clickableNotification =  NotificationCompat.Builder(this, "first")
+                .setContentTitle(title)
+                .setContentText(body)
+                .setVibrate(pattern.toLongArray())
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setLights(Color.BLUE, 1, 1)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntentFriendRequest)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(true)
+        }
 
         nm.notify(0, clickableNotification.build())
     }

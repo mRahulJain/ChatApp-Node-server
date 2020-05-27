@@ -43,6 +43,8 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         if(chatRoom.lastMessageSenderEmail == currentUserEmail) {
             lastMessageSent = "Me: $lastMessageSent"
+        } else {
+            lastMessageSent = "Their: $lastMessageSent"
         }
         mMessageIndicator.isVisible = !chatRoom.lastMessageRead
         mLastMessage.text = lastMessageSent

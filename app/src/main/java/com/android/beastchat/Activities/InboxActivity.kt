@@ -1,11 +1,15 @@
 package com.android.beastchat.Activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.android.beastchat.Fragments.InboxFragment
 import com.android.beastchat.Models.constants
+import com.android.beastchat.R
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 
@@ -16,12 +20,15 @@ class InboxActivity : BaseFragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         var messageToken: String? = null
         val sharedPreferences = getSharedPreferences(
             constants().USER_INFO_PREFERENCE,
             Context.MODE_PRIVATE
         )
-        FirebaseInstanceId.getInstance().instanceId
+
+        supportActionBar!!.title = sharedPreferences.getString(constants().USER_NAME, "")!! + "'s Inbox"
+            FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener {
                 Log.d("myCHECK", "INSIDE ON COMPLETE")
                 if(!it.isSuccessful) {
@@ -39,4 +46,21 @@ class InboxActivity : BaseFragmentActivity() {
             }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_main_createNewMessage -> {
+                val intent = Intent(application, FriendsActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
+                return true
+            }
+        }
+        return true
+    }
 }

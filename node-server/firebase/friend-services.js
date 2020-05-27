@@ -48,7 +48,25 @@ function sendMessage(socket, io) {
     chatRoomRef.set(chatRoom);
     friendMessageRef.set(message);
     newFriendMessagesRef.set(message);
-  });
+
+    var tokenRef = db.ref('userToken');
+    var friendToken = tokenRef.child(encodeEmail(data.friendEmail));
+    friendToken.once('value', (snapshot)=> {
+      var message = {
+        to:snapshot.val().token,
+        data:{
+          title: 'New Message',
+          body: `${data.senderName}: ${data.messageText}`
+        }
+      };
+      fcm.send(message)
+      .then((response)=> {
+        console.log('Message Sent!');
+      }).catch((err)=>{
+        console.log(err);
+      });
+    });
+  })
 }
 
 function approveOrDeclineFriendRequest(socket, io) {

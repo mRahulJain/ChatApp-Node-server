@@ -24,6 +24,9 @@ class ProfileFragment : BaseFragments() {
     private lateinit var mAllFriendRequestsReference: DatabaseReference
     private lateinit var mUserEmailString: String
 
+    private lateinit var mUsersNewMessagesReference: DatabaseReference
+    private lateinit var mUserNewMessagesListener: ValueEventListener
+
     fun newInstant() : ProfileFragment {
         return ProfileFragment()
     }
@@ -47,11 +50,17 @@ class ProfileFragment : BaseFragments() {
         nav.selectedItemId = R.id.tab_profile
 
         mAllFriendRequestsListener = mLiveFriendsServices
-            .getFriendRequestBottom(nav, 0, activity!!)
+            .getFriendRequestBottom(nav, R.id.tab_friends, activity!!)
         mAllFriendRequestsReference = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_FRIEND_REQUEST_RECEIVED_PATH)
             .child(constants().encodeEmail(mUserEmailString))
         mAllFriendRequestsReference.addValueEventListener(mAllFriendRequestsListener)
+
+        mUsersNewMessagesReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_NEW_MESSAGES)
+            .child(constants().encodeEmail(mUserEmailString))
+        mUserNewMessagesListener = mLiveFriendsServices.getAllNewMessages(nav, R.id.tab_inbox, activity!!)
+        mUsersNewMessagesReference.addValueEventListener(mUserNewMessagesListener)
 
         return rootView
     }
@@ -62,6 +71,10 @@ class ProfileFragment : BaseFragments() {
 
         if(mAllFriendRequestsListener != null) {
             mAllFriendRequestsReference.removeEventListener(mAllFriendRequestsListener)
+        }
+
+        if(mUserNewMessagesListener != null) {
+            mUsersNewMessagesReference.removeEventListener(mUserNewMessagesListener)
         }
     }
 }

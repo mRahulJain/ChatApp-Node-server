@@ -39,10 +39,11 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity android:name=".Activities.MessagesActivity"
+            android:parentActivityName=".Activities.InboxActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
-        <service android:name=".Notification.FriendRequestMessagingService">
+        <service android:name=".Notification.NotificationMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

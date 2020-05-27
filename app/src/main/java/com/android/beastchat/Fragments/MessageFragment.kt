@@ -119,14 +119,13 @@ class MessageFragment : BaseFragments() {
             .getReference().child(constants().FIREBASE_PATH_USER_MESSAGES)
             .child(constants().encodeEmail(mUserEmailString))
             .child(constants().encodeEmail(mFriendEmailString))
-        mGetAllMessagesListener = mLiveFriendsServices.getAllMessages(mRecyclerView, mFriendName, mFriendPicture, adapter)
+        mGetAllMessagesListener = mLiveFriendsServices.getAllMessages(mRecyclerView, mFriendName, mFriendPicture, adapter, mUserEmailString)
         mGetAllMessagesReference.addValueEventListener(mGetAllMessagesListener)
         mRecyclerView.adapter = adapter
 
         mUserChatRoomReference = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
             .child(constants().encodeEmail(mUserEmailString))
-
         mCompositeDisposable.add(
             createChatRoomDisposable()
         )
