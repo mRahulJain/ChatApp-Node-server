@@ -31,7 +31,6 @@ class FriendRequestsFragment : BaseFragments(), FriendRequestsAdapter.OnOptionLi
 
     @BindView(R.id.fragment_friend_requests_recyclerView)
     lateinit var mRecyclerView: RecyclerView
-
     @BindView(R.id.fragment_friend_requests_noResults)
     lateinit var mNoResults : TextView
 
@@ -100,6 +99,7 @@ class FriendRequestsFragment : BaseFragments(), FriendRequestsAdapter.OnOptionLi
                     mSocket,
                     mUserEmailString,
                     user!!.email,
+                    mSharedPreferences.getString(constants().USER_PICTURE, "")!!,
                     "0"
                 )
             )
@@ -111,6 +111,7 @@ class FriendRequestsFragment : BaseFragments(), FriendRequestsAdapter.OnOptionLi
                     mSocket,
                     mUserEmailString,
                     user!!.email,
+                    mSharedPreferences.getString(constants().USER_PICTURE, "")!!,
                     "1"
                 )
             )

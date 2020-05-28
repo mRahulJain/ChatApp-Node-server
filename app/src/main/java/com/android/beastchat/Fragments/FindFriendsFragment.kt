@@ -36,10 +36,8 @@ import java.util.concurrent.TimeUnit
 class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
     @BindView(R.id.fragment_find_friends_searchBar)
     lateinit var mSearchBar : EditText
-
     @BindView(R.id.fragment_find_friends_recyclerView)
     lateinit var mRecyclerView : RecyclerView
-
     @BindView(R.id.fragment_find_friends_noResults)
     lateinit var mNoResults : TextView
 
@@ -227,12 +225,12 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
     override fun onUserClicked(user: User) {
         if(constants().isIncludedInMap(mFriendRequestSentMap, user)) {
             mCompositeDisposable.add(mLiveFriendsServices
-                .addOrRemoveFriendRequest(mSocket, mUserEmailString,user!!.email, "1"))
+                .addOrRemoveFriendRequest(mSocket, mUserEmailString,user!!.email,mSharedPreferences.getString(constants().USER_PICTURE, "")!!, "1"))
             mGetAllFriendRequestsSentReference.child(constants().encodeEmail(user!!.email)).removeValue()
         } else {
             mGetAllFriendRequestsSentReference.child(constants().encodeEmail(user!!.email)).setValue(user)
             mCompositeDisposable.add(mLiveFriendsServices
-                .addOrRemoveFriendRequest(mSocket, mUserEmailString,user!!.email, "0"))
+                .addOrRemoveFriendRequest(mSocket, mUserEmailString,user!!.email,mSharedPreferences.getString(constants().USER_PICTURE, "")!!, "0"))
         }
     }
 }

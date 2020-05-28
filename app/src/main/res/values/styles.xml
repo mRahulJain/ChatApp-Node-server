@@ -11,5 +11,8 @@
     <style name="myLoaderStyle" parent="@style/Theme.AppCompat.Light">
         <item name="colorAccent">@color/myLoaderColor</item>
     </style>
+    <style name="myBottomStyle" parent="@style/Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
 
 </resources>

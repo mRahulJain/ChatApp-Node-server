@@ -2,6 +2,7 @@ package com.android.beastchat.Views.FriendViews
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.User
@@ -43,6 +44,8 @@ class FriendAdapter() : RecyclerView.Adapter<FriendViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FriendViewHolder, position: Int) {
+        val mfadeIn = AnimationUtils.loadAnimation(mActivity, R.anim.drop_fade_in)
+        holder.itemView.startAnimation(mfadeIn)
         (holder as FriendViewHolder).populate(mActivity, mUsers[position])
     }
 

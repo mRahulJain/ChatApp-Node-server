@@ -3,6 +3,7 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/myBackground"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -14,6 +15,9 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/fragment_friends_tabLayout"
             android:layout_width="match_parent"
+            android:theme="@style/myBottomStyle"
+            app:tabTextColor="@color/colorGray"
+            app:tabSelectedTextColor="@color/colorWhite"
             android:layout_height="wrap_content"
             app:tabMode="fixed"/>
         <androidx.viewpager.widget.ViewPager
@@ -27,6 +31,7 @@
         android:id="@+id/nav_viewF"
         android:layout_width="match_parent"
         app:labelVisibilityMode="unlabeled"
+        android:theme="@style/myBottomStyle"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom_navigation"/>
 </LinearLayout>

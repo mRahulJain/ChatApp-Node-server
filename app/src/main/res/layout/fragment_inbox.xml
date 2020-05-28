@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/myBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout
         android:layout_weight="1"
@@ -11,6 +12,15 @@
         app:layout_constraintBottom_toTopOf="@id/nav_viewI"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/fragment_inbox_loader"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorWhite"
+            android:text="Loading..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_inbox_recyclerView"
             android:layout_width="match_parent"
@@ -19,6 +29,7 @@
             android:id="@+id/fragment_inbox_noMessages"
             android:text="No messages yet!"
             android:textSize="26sp"
+            android:textColor="@color/colorWhite"
             android:layout_gravity="center"
             android:visibility="gone"
             android:layout_width="wrap_content"
@@ -28,6 +39,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_viewI"
         android:layout_width="match_parent"
+        android:theme="@style/myBottomStyle"
         app:labelVisibilityMode="unlabeled"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom_navigation"/>

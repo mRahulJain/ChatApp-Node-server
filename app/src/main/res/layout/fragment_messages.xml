@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/myBackground"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -8,7 +9,7 @@
         android:id="@+id/fragment_messages_recyclerView"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="75dp"
         android:layout_alignParentStart="true"
         android:layout_height="match_parent"/>
 
@@ -34,25 +35,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <LinearLayout
-        android:layout_margin="4dp"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
+        android:layout_margin="13dp"
         android:layout_above="@+id/fragment_messages_recyclerView"
         android:orientation="horizontal"
-        android:background="#E1F5FE"
+        android:background="@drawable/message_background"
         android:layout_height="60dp">
         <EditText
             android:id="@+id/fragment_messages_messageBox"
             android:hint="Type your message"
             android:layout_weight="1"
+            android:layout_margin="6dp"
+            android:textColor="@color/colorWhite"
+            android:padding="4dp"
+            android:background="@drawable/message_background"
+            android:textColorHint="@color/colorGray"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            android:layout_height="wrap_content"/>
         <ImageView
+            android:layout_margin="6dp"
             android:id="@+id/fragment_messages_sendMessage"
             android:padding="10dp"
             android:src="@drawable/ic_send"
-            android:background="@drawable/friend_request_approved"
+            android:background="@drawable/badge_view"
             android:layout_gravity="center"
             android:layout_width="40dp"
             android:layout_height="40dp"/>

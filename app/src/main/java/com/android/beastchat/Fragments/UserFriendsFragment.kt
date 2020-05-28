@@ -24,7 +24,6 @@ import com.google.firebase.database.*
 class UserFriendsFragment : BaseFragments(), FriendAdapter.userClickedListener {
     @BindView(R.id.fragment_user_friends_recyclerView)
     lateinit var mRecyclerView: RecyclerView
-
     @BindView(R.id.fragment_user_friends_noFriends)
     lateinit var mTextView: TextView
 

@@ -12,6 +12,7 @@
         android:id="@+id/fragment_user_friends_noFriends"
         android:layout_margin="40dp"
         android:layout_gravity="center"
+        android:textColor="@color/colorWhite"
         android:textSize="20sp"
         android:text="No friends found"
         android:visibility="gone"

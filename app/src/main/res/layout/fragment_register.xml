@@ -95,8 +95,9 @@
             android:id="@+id/fragment_register_animateRegister"
             android:orientation="horizontal"
             android:elevation="6dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:outlineAmbientShadowColor="@color/colorBlack"
-            android:background="@drawable/button_background_login"
             android:paddingLeft="40dp"
             android:visibility="gone"
             android:paddingRight="40dp"
@@ -105,13 +106,6 @@
             <ProgressBar
                 android:theme="@style/myLoaderStyle"
                 android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_gravity="center"
-                android:textColor="@color/colorWhite"
-                android:layout_marginLeft="10dp"
-                android:text="Signing up..."
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

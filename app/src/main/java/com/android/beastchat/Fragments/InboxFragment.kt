@@ -36,6 +36,8 @@ class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
     lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.fragment_inbox_noMessages)
     lateinit var mNoMessages: TextView
+    @BindView(R.id.fragment_inbox_loader)
+    lateinit var mLoader: TextView
 
     private lateinit var mUserChatRoomReference: DatabaseReference
     private lateinit var mUserChatRoomListener: ValueEventListener
@@ -76,7 +78,7 @@ class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
         mUserChatRoomReference = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
             .child(constants().encodeEmail(mUserEmailString))
-        mUserChatRoomListener = mLiveFriendsServices.getAllChatRooms(mRecyclerView, mNoMessages, adapter)
+        mUserChatRoomListener = mLiveFriendsServices.getAllChatRooms(mRecyclerView, mNoMessages, mLoader, adapter)
         mUserChatRoomReference.addValueEventListener(mUserChatRoomListener)
         mRecyclerView.adapter = adapter
 

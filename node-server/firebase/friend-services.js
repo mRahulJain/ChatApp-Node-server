@@ -56,7 +56,8 @@ function sendMessage(socket, io) {
         to:snapshot.val().token,
         data:{
           title: 'New Message',
-          body: `${data.senderName}: ${data.messageText}`
+          body: `${data.senderName}: ${data.messageText}`,
+          image: `${data.senderPicture}`
         }
       };
       fcm.send(message)
@@ -74,6 +75,7 @@ function approveOrDeclineFriendRequest(socket, io) {
     var friendEmail = data.friendEmail;
     var userEmail = data.userEmail;
     var requestCode = data.requestCode;
+    var userPicture = data.userPicture;
 
     var db = admin.database();
     var friendRef = db.ref('friendRequestSent')
@@ -107,7 +109,8 @@ function approveOrDeclineFriendRequest(socket, io) {
           to:snapshot.val().token,
           data:{
             title: 'Friend Request Accepted',
-            body: `Your request has been accepted by ${userEmail}`
+            body: `Your request has been accepted by ${userEmail}`,
+            image: `${userPicture}`
           }
         };
         fcm.send(message)
@@ -128,6 +131,7 @@ function sendOrDeleteFriendRequest(socket, io) {
     var friendEmail = data.email;
     var userEmail = data.userEmail;
     var requestCode = data.requestCode;
+    var userPicture = data.userPicture;
 
     var db = admin.database();
     var friendRef = db.ref('friendRequestReceived')
@@ -157,7 +161,8 @@ function sendOrDeleteFriendRequest(socket, io) {
           to:snapshot.val().token,
           data:{
             title: 'Friend Request',
-            body: `You have recieved a new friend request from ${userEmail}`
+            body: `You have recieved a new friend request from ${userEmail}`,
+            image: `${userPicture}`
           }
         };
         fcm.send(message)

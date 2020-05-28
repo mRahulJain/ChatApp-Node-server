@@ -2,6 +2,7 @@ package com.android.beastchat.Views.ChatRoomViews
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.ChatRoom
@@ -45,6 +46,8 @@ class ChatRoomAdapter() : RecyclerView.Adapter<ChatRoomViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
+        val mfadeIn = AnimationUtils.loadAnimation(mActivity, R.anim.drop_fade_in)
+        holder.itemView.startAnimation(mfadeIn)
         holder.populate(mActivity, mChatRooms[position], mCurrentUserEmailString)
     }
 

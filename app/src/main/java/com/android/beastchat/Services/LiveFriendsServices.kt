@@ -163,7 +163,7 @@ class LiveFriendsServices {
         return listener
     }
 
-    fun getAllChatRooms(recyclerView: RecyclerView, textView: TextView, chatRoomAdapter: ChatRoomAdapter): ValueEventListener {
+    fun getAllChatRooms(recyclerView: RecyclerView, textView: TextView, loader: TextView, chatRoomAdapter: ChatRoomAdapter): ValueEventListener {
         val listRooms = arrayListOf<ChatRoom>()
         val listener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -177,9 +177,11 @@ class LiveFriendsServices {
                 }
 
                 if(listRooms.isEmpty()) {
+                    loader.isVisible = false
                     recyclerView.isVisible = false
                     textView.isVisible = true
                 } else {
+                    loader.isVisible = false
                     recyclerView.isVisible = true
                     textView.isVisible = false
                     chatRoomAdapter.setmChatRooms(listRooms)
@@ -189,11 +191,12 @@ class LiveFriendsServices {
         return listener
     }
 
-    fun addOrRemoveFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String, requestCode: String): Disposable {
+    fun addOrRemoveFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String,userPicture: String, requestCode: String): Disposable {
         val details = arrayListOf<String>()
         details.add(friendsEmail)
         details.add(userEmail!!)
         details.add(requestCode)
+        details.add(userPicture)
         val listObservable = Observable.just(details)
         lateinit var mDisposable: Disposable
 
@@ -205,6 +208,7 @@ class LiveFriendsServices {
                     sendData.put("email", it[0])
                     sendData.put("userEmail", it[1])
                     sendData.put("requestCode", it[2])
+                    sendData.put("userPicture", it[3])
                     socket.emit("friendRequest", sendData)
                     SERVER_SUCCESS
                 } catch (e: JSONException) {
@@ -233,11 +237,12 @@ class LiveFriendsServices {
         return mDisposable
     }
 
-    fun approveDeclineFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String, requestCode: String): Disposable {
+    fun approveDeclineFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String,userPicture: String, requestCode: String): Disposable {
         val details = arrayListOf<String>()
         details.add(friendsEmail)
         details.add(userEmail!!)
         details.add(requestCode)
+        details.add(userPicture)
         val listObservable = Observable.just(details)
         lateinit var mDisposable: Disposable
 
@@ -249,6 +254,7 @@ class LiveFriendsServices {
                     sendData.put("friendEmail", it[0])
                     sendData.put("userEmail", it[1])
                     sendData.put("requestCode", it[2])
+                    sendData.put("userPicture", it[3])
                     socket.emit("friendRequestResponse", sendData)
                     SERVER_SUCCESS
                 } catch (e: JSONException) {

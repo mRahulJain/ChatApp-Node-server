@@ -11,10 +11,10 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_marginLeft="9dp"
         android:background="@drawable/badge_view"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/myLoaderColor"
         android:gravity="center"
         tools:text="1"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorBlack"
         android:textSize="12sp" />
 
 </FrameLayout>

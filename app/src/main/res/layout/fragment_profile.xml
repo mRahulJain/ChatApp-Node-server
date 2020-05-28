@@ -4,6 +4,7 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/myBackground"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -16,9 +17,11 @@
             android:id="@+id/fragment_profile_userPicture"
             android:scaleType="centerCrop"
             app:riv_corner_radius="30dip"
+            android:layout_marginBottom="10dp"
             app:riv_border_width="3dip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
             app:riv_border_color="#333333"
-            android:layout_centerInParent="true"
             app:riv_oval="true"
             android:layout_width="200dp"
             android:layout_height="200dp"/>
@@ -34,17 +37,17 @@
             android:id="@+id/fragment_profile_cameraPicture"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_camera"
-            android:padding="3dp"
+            android:padding="9dp"
             android:layout_toLeftOf="@+id/fragment_profile_centerIssue"
             android:layout_toStartOf="@+id/fragment_profile_centerIssue"
-            android:background="@drawable/friend_request_background"
+            android:background="@drawable/badge_view"
             android:layout_width="40dp"
             android:layout_height="40dp"/>
         <ImageView
-            android:background="@drawable/friend_request_background"
+            android:background="@drawable/badge_view"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_image"
-            android:padding="3dp"
+            android:padding="9dp"
             android:layout_toRightOf="@+id/fragment_profile_centerIssue"
             android:layout_toEndOf="@+id/fragment_profile_centerIssue"
             android:layout_below="@+id/fragment_profile_userPicture"
@@ -55,6 +58,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20sp"
             android:text="ABC"
+            android:textColor="@color/colorWhite"
             android:layout_below="@+id/fragment_profile_imagePicture"
             android:id="@+id/fragment_profile_userName"
             android:layout_width="wrap_content"
@@ -67,6 +71,7 @@
             android:id="@+id/fragment_profile_userEmail"
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
+            android:textColor="@color/colorWhite"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content"/>
         <Button
@@ -74,6 +79,14 @@
             android:layout_centerInParent="true"
             android:layout_below="@+id/fragment_profile_userEmail"
             android:layout_marginTop="20dp"
+            android:outlineAmbientShadowColor="@color/colorBlack"
+            android:background="@drawable/button_background_login"
+            android:translationZ="20dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorWhite"
+            android:paddingLeft="70dp"
+            android:textAllCaps="false"
+            android:paddingRight="70dp"
             android:text="SIGN OUT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -82,6 +95,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_viewP"
         android:layout_width="match_parent"
+        android:theme="@style/myBottomStyle"
         app:labelVisibilityMode="unlabeled"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom_navigation"/>

@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
+    android:background="@drawable/edit_text_background"
+    android:padding="9dp"
+    android:layout_margin="4dp"
     android:layout_height="wrap_content">
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/list_friend_requests_userPicture"
@@ -19,6 +22,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="3dp"
+        android:textColor="@color/colorWhite"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
@@ -29,9 +33,9 @@
         android:id="@+id/list_friend_requests_approveRequest"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_check"
-        android:padding="3dp"
+        android:padding="9dp"
+        android:layout_gravity="center"
         android:background="@drawable/friend_request_approved"
-        android:layout_marginTop="15dp"
         android:layout_alignParentRight="true"
         android:layout_width="40dp"
         android:layout_height="40dp"/>
@@ -41,9 +45,9 @@
         android:id="@+id/list_friend_requests_cancelRequest"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_close"
-        android:padding="3dp"
+        android:padding="9dp"
+        android:layout_gravity="center"
         android:background="@drawable/friend_request_background"
-        android:layout_marginTop="15dp"
         android:layout_alignParentRight="true"
         android:layout_width="40dp"
         android:layout_height="40dp"/>

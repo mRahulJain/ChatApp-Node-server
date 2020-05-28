@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -65,8 +66,11 @@ class LoginFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_login_login_button)
     fun semmLoginButton() {
+        val fadeOutAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_out)
+        val fadeInAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_in)
+        mLoginButton.startAnimation(fadeOutAnimate)
+        mAnimateLogin.startAnimation(fadeInAnimate)
         mAnimateLogin.isVisible = true
-        mLoginButton.isVisible = false
         mCompositeDisposable.add(
             mLiveAccountServices.sendLoginInfo(
                 mUserEmail,

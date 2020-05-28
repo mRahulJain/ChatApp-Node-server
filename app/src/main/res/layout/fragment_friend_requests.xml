@@ -12,6 +12,7 @@
         android:id="@+id/fragment_friend_requests_noResults"
         android:text="No requests found"
         android:textSize="20sp"
+        android:textColor="@color/colorWhite"
         android:visibility="gone"
         android:layout_gravity="center"
         android:layout_margin="40dp"
