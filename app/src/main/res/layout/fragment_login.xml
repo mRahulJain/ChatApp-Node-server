@@ -4,29 +4,123 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@color/myBackground"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:src="@drawable/sms"
+        android:textSize="30sp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="100dp"
+        android:layout_marginBottom="80dp"
+        android:layout_height="100dp"/>
+    <TextView
+        android:text="EMAIL"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/myTextViewColor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <EditText
         android:inputType="text"
         android:id="@+id/fragment_login_userEmail"
-        android:hint="UserEmail"
+        android:hint="abc@xyz.com"
+        android:layout_marginLeft="16dp"
+        android:drawableLeft="@drawable/ic_email"
+        android:drawablePadding="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="20dp"
+        android:padding="14dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorGray"
+        android:background="@drawable/edit_text_background"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="PASSWORD"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/myTextViewColor1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <EditText
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/ic_key"
         android:inputType="textPassword"
         android:id="@+id/fragment_login_userPassword"
-        android:hint="Password"
+        android:hint="*********"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="14dp"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorGray"
+        android:background="@drawable/edit_text_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/fragment_login_login_button"
-        android:text="Sign In"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:outlineAmbientShadowColor="@color/colorBlack"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:id="@+id/fragment_login_animateLogin"
+            android:orientation="horizontal"
+            android:elevation="6dp"
+            android:outlineAmbientShadowColor="@color/colorBlack"
+            android:background="@drawable/button_background_login"
+            android:paddingLeft="40dp"
+            android:visibility="gone"
+            android:paddingRight="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:theme="@style/myLoaderStyle"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/colorWhite"
+                android:layout_marginLeft="10dp"
+                android:text="Signing in..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <Button
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:outlineAmbientShadowColor="@color/colorBlack"
+            android:background="@drawable/button_background_login"
+            android:translationZ="20dp"
+            android:elevation="20dp"
+            android:id="@+id/fragment_login_login_button"
+            android:text="Sign In"
+            android:textColor="@color/colorWhite"
+            android:paddingLeft="100dp"
+            android:textAllCaps="false"
+            android:paddingRight="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <TextView
+        android:textColor="@color/colorGray"
+        android:layout_marginTop="30dp"
+        android:text="OR"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
+        android:background="@android:color/transparent"
         android:id="@+id/fragment_login_register_button"
-        android:text="Sign Up"
-        android:layout_width="match_parent"
+        android:text="Create my account!"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@color/myTextViewColor1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>

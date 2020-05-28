@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -28,6 +30,7 @@ class LoginFragment : BaseFragments() {
     @BindView(R.id.fragment_login_userPassword) lateinit var mPassword : EditText
     @BindView(R.id.fragment_login_login_button) lateinit var mLoginButton : Button
     @BindView(R.id.fragment_login_register_button) lateinit var mRegisterButton : Button
+    @BindView(R.id.fragment_login_animateLogin) lateinit var mAnimateLogin: LinearLayout
 
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
@@ -62,12 +65,16 @@ class LoginFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_login_login_button)
     fun semmLoginButton() {
+        mAnimateLogin.isVisible = true
+        mLoginButton.isVisible = false
         mCompositeDisposable.add(
             mLiveAccountServices.sendLoginInfo(
                 mUserEmail,
                 mPassword,
                 mSocket,
-                mActivity
+                mActivity,
+                mLoginButton,
+                mAnimateLogin
             )
         )
     }

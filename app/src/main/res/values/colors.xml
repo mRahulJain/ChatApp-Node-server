@@ -3,4 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="myBackground">#2b2d5c</color>
+    <color name="editTextBackground">#23234f</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#acacac</color>
+    <color name="buttonBackground">#2f3163</color>
+    <color name="myTextViewColor1">#6d70aa</color>
+    <color name="myLoaderColor">#f8c42e</color>
 </resources>

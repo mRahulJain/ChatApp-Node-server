@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -28,6 +30,7 @@ class RegisterFragment : BaseFragments() {
     @BindView(R.id.fragment_register_userPassword) lateinit var mPassword : EditText
     @BindView(R.id.fragment_register_LoginButton) lateinit var mLoginButton : Button
     @BindView(R.id.fragment_register_registerButton) lateinit var mRegisterButton : Button
+    @BindView(R.id.fragment_register_animateRegister) lateinit var mAnimateRegister: LinearLayout
 
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
@@ -52,12 +55,16 @@ class RegisterFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_register_registerButton)
     fun setmRegisterButton() {
+        mRegisterButton.isVisible = false
+        mAnimateRegister.isVisible = true
         mCompositeDisposable.add(
             mLiveAccountServices.sendRegistrationInfo(
                 mUserName,
                 mUserEmail,
                 mPassword,
-                mSocket
+                mSocket,
+                mRegisterButton,
+                mAnimateRegister
             )
         )
     }
@@ -73,7 +80,9 @@ class RegisterFragment : BaseFragments() {
             mCompositeDisposable.add(
                 mLiveAccountServices.registerResponse(
                     data,
-                    mAcitvity
+                    mAcitvity,
+                    mRegisterButton,
+                    mAnimateRegister
                 )
             )
         }

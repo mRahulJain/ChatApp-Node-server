@@ -10,9 +10,8 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.isVisible
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.InboxActivity
 import com.android.beastchat.Models.constants
@@ -120,7 +119,9 @@ class LiveAccountServices {
         }
     }
 
-    fun sendLoginInfo(userEmail: EditText, userPassword: EditText, socket: Socket, activity : BaseFragmentActivity?) : Disposable {
+    fun sendLoginInfo(userEmail: EditText, userPassword: EditText, socket: Socket,
+                      activity : BaseFragmentActivity?, mLoginButton: Button,
+                      mAnimateLogin: LinearLayout) : Disposable {
         var userDetails : ArrayList<String> = arrayListOf()
         userDetails.add(userEmail.text.toString())
         userDetails.add(userPassword.text.toString())
@@ -160,6 +161,8 @@ class LiveAccountServices {
                                     it.exception!!.message,
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                mAnimateLogin.isVisible = false
+                                mLoginButton.isVisible = true
                             }
                         }
                         try {
@@ -173,6 +176,8 @@ class LiveAccountServices {
                             }
                         } catch (e: IOException) {
                             Log.e("myError", "${e.localizedMessage}")
+                            mAnimateLogin.isVisible = false
+                            mLoginButton.isVisible = true
                         }
                         FirebaseAuth.getInstance().signOut()
                         USER_NO_ERRORS
@@ -194,15 +199,23 @@ class LiveAccountServices {
                     when (t) {
                         USER_ERROR_EMPTY_EMAIL -> {
                             userEmail.error = "Email address can't be empty"
+                            mAnimateLogin.isVisible = false
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_EMPTY_PASSWORD -> {
                             userPassword.error = "Password can't be empty"
+                            mAnimateLogin.isVisible = false
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_SHORT_PASSWORD -> {
                             userPassword.error = "Password is too short"
+                            mAnimateLogin.isVisible = false
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_EMAIL_BAD_FORMAT -> {
                             userEmail.error = "Email is wrongly formatted"
+                            mAnimateLogin.isVisible = false
+                            mLoginButton.isVisible = true
                         }
                     }
                 }
@@ -288,7 +301,9 @@ class LiveAccountServices {
         return disposable
     }
 
-    fun sendRegistrationInfo(userName: EditText, userEmail: EditText, userPassword: EditText, socket : Socket) : Disposable{
+    fun sendRegistrationInfo(userName: EditText, userEmail: EditText,
+                             userPassword: EditText, socket : Socket,
+                             mRegisterButton: Button, mAnimateRegister: LinearLayout) : Disposable{
         var userDetails : ArrayList<String> = arrayListOf()
         userDetails.add(userName.text.toString())
         userDetails.add(userEmail.text.toString())
@@ -330,6 +345,8 @@ class LiveAccountServices {
                         } catch (e : JSONException) {
                             Log.e("myError", "${e.localizedMessage}")
                             SERVER_FALIURE
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                         0
                     }
@@ -350,18 +367,28 @@ class LiveAccountServices {
                     when (t) {
                         USER_ERROR_EMPTY_EMAIL -> {
                             userEmail.error = "Email address can't be empty"
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                         USER_ERROR_EMPTY_USERNAME -> {
                             userName.error = "UserName can't be empty"
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                         USER_ERROR_EMPTY_PASSWORD -> {
                             userPassword.error = "Password can't be empty"
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                         USER_ERROR_SHORT_PASSWORD -> {
                             userPassword.error = "Password is too short"
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                         USER_ERROR_EMAIL_BAD_FORMAT -> {
                             userEmail.error = "Email is wrongly formatted"
+                            mRegisterButton.isVisible = true
+                            mAnimateRegister.isVisible = false
                         }
                     }
                 }
@@ -372,7 +399,8 @@ class LiveAccountServices {
         return disposable
     }
 
-    fun registerResponse(data: JSONObject, activity : BaseFragmentActivity?) : Disposable {
+    fun registerResponse(data: JSONObject, activity : BaseFragmentActivity?,
+                         mRegisterButton: Button, mAnimateRegister: LinearLayout) : Disposable {
         val jsonObjectObservable = Observable.just(data)
         lateinit var disposable: Disposable
         jsonObjectObservable
@@ -412,6 +440,8 @@ class LiveAccountServices {
                             stringResponse,
                             Toast.LENGTH_LONG
                         ).show()
+                        mRegisterButton.isVisible = true
+                        mAnimateRegister.isVisible = false
                     }
                 }
 
