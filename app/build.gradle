@@ -61,3 +61,6 @@ dependencies {
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
