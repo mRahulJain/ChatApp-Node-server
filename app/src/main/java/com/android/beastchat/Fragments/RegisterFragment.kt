@@ -56,10 +56,7 @@ class RegisterFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_register_registerButton)
     fun setmRegisterButton() {
-        val fadeOutAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_out)
-        val fadeInAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_in)
-        mRegisterButton.startAnimation(fadeOutAnimate)
-        mAnimateRegister.startAnimation(fadeInAnimate)
+        mRegisterButton.isVisible = false
         mAnimateRegister.isVisible = true
         mCompositeDisposable.add(
             mLiveAccountServices.sendRegistrationInfo(
@@ -103,7 +100,7 @@ class RegisterFragment : BaseFragments() {
         return rootView
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mAcitvity = context as BaseFragmentActivity
     }

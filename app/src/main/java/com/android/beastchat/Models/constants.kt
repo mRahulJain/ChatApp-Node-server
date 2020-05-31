@@ -3,7 +3,7 @@ package com.android.beastchat.Models
 import com.android.beastchat.Entities.User
 
 class constants {
-    val IP_LOCALHOST: String = "http://192.168.43.193:3000/"
+    val IP_LOCALHOST: String = "https://sms-node-server.herokuapp.com/"
     val USER_INFO_PREFERENCE: String = "USER_INFO_PREFERENCE"
     val USER_EMAIL : String = "USER_EMAIL"
     val USER_NAME : String = "USER_NAME"

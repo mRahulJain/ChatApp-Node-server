@@ -3,19 +3,18 @@ package com.android.beastchat.Fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.Unbinder
+import butterknife.*
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.RegisterActivity
 import com.android.beastchat.Models.constants
@@ -66,10 +65,7 @@ class LoginFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_login_login_button)
     fun semmLoginButton() {
-        val fadeOutAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_out)
-        val fadeInAnimate = AnimationUtils.loadAnimation(context, R.anim.anim_fade_in)
-        mLoginButton.startAnimation(fadeOutAnimate)
-        mAnimateLogin.startAnimation(fadeInAnimate)
+        mLoginButton.isVisible = false
         mAnimateLogin.isVisible = true
         mCompositeDisposable.add(
             mLiveAccountServices.sendLoginInfo(
@@ -101,7 +97,7 @@ class LoginFragment : BaseFragments() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = context as BaseFragmentActivity
     }

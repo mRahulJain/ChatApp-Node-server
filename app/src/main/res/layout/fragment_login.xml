@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     android:background="@color/myBackground"
@@ -82,8 +82,8 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <Button
-            android:layout_gravity="center"
             android:layout_margin="13dp"
+            android:layout_gravity="center"
             android:outlineAmbientShadowColor="@color/colorBlack"
             android:background="@drawable/button_background_login"
             android:translationZ="20dp"

@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var admin = require("firebase-admin");
 var FCM = require("fcm-push");
-var serverKey = 'AAAAa97cRdg:APA91bHQ6lb_WOrCg9nqxbybGSKqePtlR7pWcrkxW1uDzJuM5frt7WsIj6PPn6SIq-o-SmWHQPZNw1MgrelyhCTVmHfjQ0G52Ry8KqBnRYSwplHmJhvBydTxUG5VfWb6UD5ncRaEXR3k';
+var serverKey = '---';
 var fcm = new FCM(serverKey);
 
 

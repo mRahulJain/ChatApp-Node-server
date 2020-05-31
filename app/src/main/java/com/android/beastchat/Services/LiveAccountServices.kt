@@ -159,8 +159,7 @@ class LiveAccountServices {
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 mAnimateLogin.isVisible = false
-                                val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                                mLoginButton.startAnimation(fadeInAnimate)
+                                mLoginButton.isVisible = true
                             }
                         }
                         try {
@@ -175,8 +174,7 @@ class LiveAccountServices {
                         } catch (e: IOException) {
                             Log.e("myError", "${e.localizedMessage}")
                             mAnimateLogin.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mLoginButton.startAnimation(fadeInAnimate)
+                            mLoginButton.isVisible = true
                         }
                         FirebaseAuth.getInstance().signOut()
                         USER_NO_ERRORS
@@ -199,26 +197,22 @@ class LiveAccountServices {
                         USER_ERROR_EMPTY_EMAIL -> {
                             userEmail.error = "Email address can't be empty"
                             mAnimateLogin.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mLoginButton.startAnimation(fadeInAnimate)
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_EMPTY_PASSWORD -> {
                             userPassword.error = "Password can't be empty"
                             mAnimateLogin.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mLoginButton.startAnimation(fadeInAnimate)
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_SHORT_PASSWORD -> {
                             userPassword.error = "Password is too short"
                             mAnimateLogin.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mLoginButton.startAnimation(fadeInAnimate)
+                            mLoginButton.isVisible = true
                         }
                         USER_ERROR_EMAIL_BAD_FORMAT -> {
                             userEmail.error = "Email is wrongly formatted"
                             mAnimateLogin.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mLoginButton.startAnimation(fadeInAnimate)
+                            mLoginButton.isVisible = true
                         }
                     }
                 }
@@ -349,8 +343,7 @@ class LiveAccountServices {
                             Log.e("myError", "${e.localizedMessage}")
                             SERVER_FALIURE
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                         0
                     }
@@ -372,32 +365,27 @@ class LiveAccountServices {
                         USER_ERROR_EMPTY_EMAIL -> {
                             userEmail.error = "Email address can't be empty"
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                         USER_ERROR_EMPTY_USERNAME -> {
                             userName.error = "UserName can't be empty"
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                         USER_ERROR_EMPTY_PASSWORD -> {
                             userPassword.error = "Password can't be empty"
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                         USER_ERROR_SHORT_PASSWORD -> {
                             userPassword.error = "Password is too short"
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                         USER_ERROR_EMAIL_BAD_FORMAT -> {
                             userEmail.error = "Email is wrongly formatted"
                             mAnimateRegister.isVisible = false
-                            val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                            mRegisterButton.startAnimation(fadeInAnimate)
+                            mRegisterButton.isVisible = true
                         }
                     }
                 }
@@ -450,8 +438,7 @@ class LiveAccountServices {
                             Toast.LENGTH_LONG
                         ).show()
                         mAnimateRegister.isVisible = false
-                        val fadeInAnimate = AnimationUtils.loadAnimation(activity!!, R.anim.anim_fade_in)
-                        mRegisterButton.startAnimation(fadeInAnimate)
+                        mRegisterButton.isVisible = true
                     }
                 }
 
