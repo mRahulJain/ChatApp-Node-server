@@ -12,19 +12,8 @@ This is a chatting application. It combines Node.js server with firebase to crea
 <img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/images/8.jpg" width="280" height="500"/>
 </p>
 <br><br>
-<h1>Simple Working Send Friend Request</h1>
-<p>
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/device1_friendRequest.gif" width="280" height="490"/>
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/device2_friendRequest.gif" width="280" height="490"/>
-</p>
-<h1>Simple Working Send Message</h1>
-<p>
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/device1_message.gif" width="280" height="490"/>
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/device2_message.gif" width="280" height="490"/>
-</p>
-<br><br>
+<h1>See some videos</h1>
+<p><a href="https://drive.google.com/open?id=1aFPJXgD0r3MjQX8qQUhGmAyVCLBdmpvx">Click here!</p>
 <h1>Libraries Used</h1>
 <p>
 <ul>
