@@ -3,19 +3,35 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var admin = require("firebase-admin");
 var FCM = require("fcm-push");
-var serverKey = '---';
+var serverKey = 'AAAAa97cRdg:APA91bHQ6lb_WOrCg9nqxbybGSKqePtlR7pWcrkxW1uDzJuM5frt7WsIj6PPn6SIq-o-SmWHQPZNw1MgrelyhCTVmHfjQ0G52Ry8KqBnRYSwplHmJhvBydTxUG5VfWb6UD5ncRaEXR3k';
 var fcm = new FCM(serverKey);
+var onlineUserEmail = "";
 
 
 var userFriendRequests = (io) => {
   io.on('connection', function(socket){
-    console.log(`Client ${socket.id} is connected to friendsServices`);
+    putUserOnline(socket, io, "0");
     sendOrDeleteFriendRequest(socket, io);
     approveOrDeclineFriendRequest(socket, io);
     detectDisconnection(socket, io);
     sendMessage(socket,io);
   });
 };
+
+function putUserOnline(socket, io, requestCode) {
+  socket.on('userOnline', (data)=> {
+    onlineUserEmail = data.userEmail;
+
+    var db = admin.database();
+    var userStatusRef = db.ref('userStatus')
+    .child(encodeEmail(onlineUserEmail));
+
+    var userStatus = {
+      status: true
+    };
+    userStatusRef.set(userStatus);
+  })
+}
 
 function sendMessage(socket, io) {
   socket.on('details', (data)=> {
@@ -181,7 +197,14 @@ function sendOrDeleteFriendRequest(socket, io) {
 
 function detectDisconnection(socket, io) {
   socket.once('disconnect', function(){
-      console.log('A client has disconnected from friendsServices');
+    var db = admin.database();
+    var userStatusRef = db.ref('userStatus')
+    .child(encodeEmail(onlineUserEmail));
+
+    var userStatus = {
+      status: false
+    };
+    userStatusRef.set(userStatus);
   });
 }
 

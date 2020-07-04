@@ -12,7 +12,9 @@ import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.activity_fragment_base.view.*
+import java.net.URISyntaxException
 
 abstract class BaseFragmentActivity : AppCompatActivity() {
     abstract fun createFragment() : Fragment

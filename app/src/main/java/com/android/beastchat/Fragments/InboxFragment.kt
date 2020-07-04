@@ -1,6 +1,7 @@
 package com.android.beastchat.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.socket.client.IO
+import java.net.URISyntaxException
 
 class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
 
@@ -45,14 +48,26 @@ class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
     private lateinit var mUsersNewMessagesReference: DatabaseReference
     private lateinit var mUserNewMessagesListener: ValueEventListener
 
+    private lateinit var mSocket: io.socket.client.Socket
+
     fun newInstant() : InboxFragment {
         return InboxFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            mSocket = IO.socket(constants().IP_LOCALHOST)
+        } catch (e: URISyntaxException) {
+            Log.d("myError", "${e.localizedMessage}")
+        }
+        mSocket.connect()
+
         mLiveFriendsServices = LiveFriendsServices().getInstant()
         mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +106,11 @@ class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
         return rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mUnbinder.unbind()
@@ -119,4 +139,8 @@ class InboxFragment : BaseFragments(), ChatRoomAdapter.ChatRoomListener {
         activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mSocket.disconnect()
+    }
 }

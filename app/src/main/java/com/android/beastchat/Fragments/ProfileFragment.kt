@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,12 +19,12 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Activities.ImageActivity
 import com.android.beastchat.Models.AndroidPermissions
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveAccountServices
 import com.android.beastchat.Services.LiveFriendsServices
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -34,9 +33,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
+import io.socket.client.IO
+import java.net.URISyntaxException
 
 class ProfileFragment : BaseFragments() {
     private var mActivity: BaseFragmentActivity? = null
@@ -68,15 +66,32 @@ class ProfileFragment : BaseFragments() {
     private lateinit var mTempUri: Uri
     private lateinit var mAndroidPermissions: AndroidPermissions
 
+    private lateinit var mSocket: io.socket.client.Socket
+
     fun newInstant() : ProfileFragment {
         return ProfileFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            mSocket = IO.socket(constants().IP_LOCALHOST)
+        } catch (e: URISyntaxException) {
+            Log.d("myError", "${e.localizedMessage}")
+        }
+        mSocket.connect()
+
         mLiveFriendsServices = LiveFriendsServices().getInstant()
         mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
         mAndroidPermissions = AndroidPermissions(activity!! as BaseFragmentActivity)
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
     }
 
     override fun onCreateView(
@@ -153,6 +168,14 @@ class ProfileFragment : BaseFragments() {
         activity!!.finish()
     }
 
+    @OnClick(R.id.fragment_profile_userPicture)
+    fun setmUserPictureClick() {
+        val intent = Intent(context, ImageActivity::class.java)
+        intent.putExtra("imageUri" , mSharedPreferences.getString(constants().USER_PICTURE, ""))
+        startActivity(intent)
+        activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
     fun getOutputFile(): Uri {
         val resolver = context!!.contentResolver
         val contentValues = ContentValues().apply {
@@ -223,6 +246,11 @@ class ProfileFragment : BaseFragments() {
         if(mUserNewMessagesListener != null) {
             mUsersNewMessagesReference.removeEventListener(mUserNewMessagesListener)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSocket.disconnect()
     }
 
     override fun onAttach(context: Context) {

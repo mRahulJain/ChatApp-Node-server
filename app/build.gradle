@@ -60,4 +60,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation 'com.r0adkll:slidableactivity:2.1.0'
 }

@@ -1,6 +1,7 @@
 package com.android.beastchat.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.socket.client.IO
+import java.net.URISyntaxException
 
 class FriendsFragment : BaseFragments() {
     private lateinit var mLiveFriendsServices: LiveFriendsServices
@@ -35,15 +38,32 @@ class FriendsFragment : BaseFragments() {
 
     @BindView(R.id.fragment_friends_tabLayout)
     lateinit var mTabLayout : TabLayout
-
     @BindView(R.id.fragment_friends_viewPager)
     lateinit var mViewPager : ViewPager
 
+    private lateinit var mSocket: io.socket.client.Socket
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            mSocket = IO.socket(constants().IP_LOCALHOST)
+        } catch (e: URISyntaxException) {
+            Log.d("myError", "${e.localizedMessage}")
+        }
+        mSocket.connect()
+
         mLiveFriendsServices = LiveFriendsServices().getInstant()
         mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
     }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,5 +107,10 @@ class FriendsFragment : BaseFragments() {
         if(mUserNewMessagesListener != null) {
             mUsersNewMessagesReference.removeEventListener(mUserNewMessagesListener)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSocket.disconnect()
     }
 }

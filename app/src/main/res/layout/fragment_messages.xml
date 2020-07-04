@@ -1,15 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/myBackground"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <LinearLayout
+        android:background="@color/myBackgroundTop"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center"
+            android:focusable="true"
+            android:padding="2dp"
+            android:clickable="true"
+            android:background="@drawable/background_back"
+            android:id="@+id/fragment_messages_back"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_back"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/fragment_messages_friendPictureToolbar"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="30dip"
+                android:layout_gravity="bottom"
+                app:riv_border_width="3dip"
+                android:layout_centerVertical="true"
+                app:riv_border_color="#333333"
+                android:src="@drawable/ic_person"
+                app:riv_oval="true"
+                android:layout_width="35dp"
+                android:layout_height="35dp"/>
+        </LinearLayout>
+        <TextView
+            android:text="Here is my name"
+            android:textSize="22sp"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:id="@+id/fragment_messages_friendNameToolbar"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginRight="5dp"
+            android:id="@+id/fragment_messages_onlineStatus"
+            android:layout_gravity="center|right"
+            android:src="@drawable/badge_online"
+            android:layout_width="12dp"
+            android:layout_height="12dp"/>
+    </LinearLayout>
+    <TextView
+        android:background="#50000000"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_messages_recyclerView"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="75dp"
+        android:layout_weight="1"
         android:layout_alignParentStart="true"
         android:layout_height="match_parent"/>
 
@@ -37,31 +102,34 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_margin="13dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="5dp"
         android:layout_above="@+id/fragment_messages_recyclerView"
         android:orientation="horizontal"
         android:background="@drawable/message_background"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content">
         <EditText
             android:id="@+id/fragment_messages_messageBox"
             android:hint="Type your message"
             android:layout_weight="1"
-            android:layout_margin="6dp"
+            android:layout_margin="12sp"
             android:textColor="@color/colorWhite"
-            android:padding="4dp"
             android:background="@drawable/message_background"
             android:textColorHint="@color/colorGray"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <ImageView
-            android:layout_margin="6dp"
+        <TextView
             android:id="@+id/fragment_messages_sendMessage"
-            android:padding="10dp"
-            android:src="@drawable/ic_send"
-            android:background="@drawable/badge_view"
+            android:background="@drawable/background_back"
+            android:text="SEND"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:textColor="@color/colorWhite"
             android:layout_gravity="center"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

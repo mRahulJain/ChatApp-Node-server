@@ -1,6 +1,7 @@
 package com.android.beastchat.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
 import com.android.beastchat.Views.FriendViews.FriendAdapter
 import com.google.firebase.database.*
+import io.socket.client.IO
+import java.net.URISyntaxException
 
 class UserFriendsFragment : BaseFragments(), FriendAdapter.userClickedListener {
     @BindView(R.id.fragment_user_friends_recyclerView)
@@ -35,14 +38,31 @@ class UserFriendsFragment : BaseFragments(), FriendAdapter.userClickedListener {
     private lateinit var mAllFriends : ArrayList<User>
     private lateinit var mAdapter : FriendAdapter
 
+    private lateinit var mSocket: io.socket.client.Socket
+
     fun newInstant() : UserFriendsFragment {
         return UserFriendsFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            mSocket = IO.socket(constants().IP_LOCALHOST)
+        } catch (e: URISyntaxException) {
+            Log.d("myError", "${e.localizedMessage}")
+        }
+        mSocket.connect()
+
         mLiveFriendsServices = LiveFriendsServices().getInstant()
         mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString!!)
     }
 
     override fun onCreateView(
@@ -73,6 +93,10 @@ class UserFriendsFragment : BaseFragments(), FriendAdapter.userClickedListener {
         if(mGetAllFriendsListener != null) {
             mGetAllFriendsReference.removeEventListener(mGetAllFriendsListener)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     override fun onMessageClick(user: User) {

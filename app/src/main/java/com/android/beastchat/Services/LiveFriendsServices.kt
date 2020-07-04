@@ -111,7 +111,7 @@ class LiveFriendsServices {
         return mDisposable
     }
 
-    fun isSeenMessage(textView: TextView, mCurrentUserEmail: String, mFriendEmailString: String) {
+    fun isSeenMessage(imageView: ImageView, mCurrentUserEmail: String, mFriendEmailString: String) {
         var mSeenRef = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
             .child(constants().encodeEmail(mFriendEmailString))
@@ -123,7 +123,12 @@ class LiveFriendsServices {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()) {
-                    textView.isVisible = p0.value == true
+                    if(p0.value == true) {
+                        imageView.setImageResource(R.drawable.ic_double_tick_seen)
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_double_tick)
+                    }
+//                    textView.isVisible = p0.value == true
                 }
             }
         })
@@ -237,6 +242,47 @@ class LiveFriendsServices {
         return mDisposable
     }
 
+    fun putUserOnline(socket: Socket, userEmail: String) : Disposable {
+        val details = arrayListOf<String>()
+        details.add(userEmail)
+
+        val listObservable = Observable.just(details)
+        lateinit var mDisposable: Disposable
+
+        listObservable
+            .subscribeOn(Schedulers.io())
+            .map {
+                val sendData = JSONObject()
+                try {
+                    sendData.put("userEmail", userEmail)
+                    socket.emit("userOnline", sendData)
+                    SERVER_SUCCESS
+                } catch (e: JSONException) {
+                    Log.d("myERROR", e.localizedMessage)
+                    SERVER_FALIURE
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int>{
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable?) {
+                    if (d != null) {
+                        mDisposable = d
+                    }
+                }
+
+                override fun onNext(t: Int?) {
+                }
+
+                override fun onError(e: Throwable?) {
+                }
+
+            })
+        return mDisposable
+    }
+
     fun approveDeclineFriendRequest(socket: Socket, userEmail: String?, friendsEmail: String,userPicture: String, requestCode: String): Disposable {
         val details = arrayListOf<String>()
         details.add(friendsEmail)
@@ -281,6 +327,23 @@ class LiveFriendsServices {
 
             })
         return mDisposable
+    }
+
+    fun checkUserOnline(imageView: ImageView, friendsEmail: String) {
+        var mCheckUserOnlineRef = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_ONLINE)
+            .child(constants().encodeEmail(friendsEmail))
+            .child("status")
+        mCheckUserOnlineRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if(p0.exists()) {
+                    imageView.isVisible = p0.value == true
+                }
+            }
+        })
     }
 
     fun getAllFriendRequests(adapter: FriendRequestsAdapter, recyclerView: RecyclerView, textView: TextView): ValueEventListener {

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/myBackground</item>
         <item name="colorPrimaryDark">@color/myBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/calibri_font</item>
     </style>
 
     <style name="myLoaderStyle" parent="@style/Theme.AppCompat.Light">
@@ -13,6 +14,11 @@
     </style>
     <style name="myBottomStyle" parent="@style/Theme.AppCompat.Light">
         <item name="colorAccent">@color/colorWhite</item>
+    </style>
+    
+    <style name="AppTheme.SlidrActivityTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

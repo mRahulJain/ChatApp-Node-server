@@ -1,5 +1,6 @@
 package com.android.beastchat.Fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -47,6 +45,12 @@ class MessageFragment : BaseFragments() {
     lateinit var mFriendNameString: String
     lateinit var mUserEmailString: String
 
+    @BindView(R.id.fragment_messages_back)
+    lateinit var mBackButton: LinearLayout
+    @BindView(R.id.fragment_messages_friendPictureToolbar)
+    lateinit var mPictureToolbar: RoundedImageView
+    @BindView(R.id.fragment_messages_friendNameToolbar)
+    lateinit var mNameToolbar: TextView
     @BindView(R.id.fragment_messages_friendPicture)
     lateinit var mFriendPicture: RoundedImageView
     @BindView(R.id.fragment_messages_friendName)
@@ -54,9 +58,11 @@ class MessageFragment : BaseFragments() {
     @BindView(R.id.fragment_messages_messageBox)
     lateinit var mMessageBox: EditText
     @BindView(R.id.fragment_messages_sendMessage)
-    lateinit var mSendMessage: ImageView
+    lateinit var mSendMessage: TextView
     @BindView(R.id.fragment_messages_recyclerView)
     lateinit var mRecyclerView: RecyclerView
+    @BindView(R.id.fragment_messages_onlineStatus)
+    lateinit var mOnlineStatus: ImageView
 
     lateinit var mUnbinder: Unbinder
 
@@ -113,6 +119,12 @@ class MessageFragment : BaseFragments() {
             .into(mFriendPicture)
         mFriendName.text = mFriendNameString
 
+        //toolbar
+        Picasso.with(context)
+            .load(mFriendPictureString)
+            .into(mPictureToolbar)
+        mNameToolbar.text = mFriendNameString
+
         val adapter = MessagesAdapter(activity!! as BaseFragmentActivity, mUserEmailString, mFriendEmailString)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mGetAllMessagesReference = FirebaseDatabase.getInstance()
@@ -130,8 +142,36 @@ class MessageFragment : BaseFragments() {
             createChatRoomDisposable()
         )
         messageBoxListener()
+        recyclerViewAutoScrollListener()
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+        mLiveFriendsServices.checkUserOnline(mOnlineStatus, mFriendEmailString)
 
         return rootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+    }
+
+    private fun recyclerViewAutoScrollListener() {
+        if (Build.VERSION.SDK_INT >= 11) {
+            mRecyclerView.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                if (bottom < oldBottom) {
+                    mRecyclerView.postDelayed(Runnable {
+                        mRecyclerView.smoothScrollToPosition(
+                            mRecyclerView.adapter!!.getItemCount() - 1
+                        )
+                    }, 100)
+                }
+            })
+        }
+    }
+
+    @OnClick(R.id.fragment_messages_back)
+    fun back() {
+        activity!!.finish()
     }
 
     @OnClick(R.id.fragment_messages_sendMessage)
@@ -240,6 +280,5 @@ class MessageFragment : BaseFragments() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mSocket.disconnect()
     }
 }

@@ -75,9 +75,16 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
         }
         mSocket.connect()
 
-        mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")
+        mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
         mLiveFriendsServices = LiveFriendsServices().getInstant()
         mFriendRequestSentMap = HashMap()
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString!!)
     }
 
     fun setmFriendRequestSentMap(friendRequestSentMap : HashMap<String, User>) {
@@ -87,7 +94,6 @@ class FindFriendsFragment : BaseFragments(), FindFriendsAdapter.UserListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        mSocket.disconnect()
     }
 
     override fun onCreateView(

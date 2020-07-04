@@ -12,8 +12,11 @@ import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
+import io.socket.client.IO
+import java.net.URISyntaxException
 
 class InboxActivity : BaseFragmentActivity() {
+
     override fun createFragment(): Fragment {
         return InboxFragment().newInstant()
     }

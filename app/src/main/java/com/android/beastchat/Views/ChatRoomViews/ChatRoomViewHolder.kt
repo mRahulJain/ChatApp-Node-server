@@ -1,6 +1,7 @@
 package com.android.beastchat.Views.ChatRoomViews
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +11,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.R
+import com.android.beastchat.Services.LiveFriendsServices
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
@@ -22,9 +24,14 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     lateinit var mLastMessage: TextView
     @BindView(R.id.list_chat_room_messageIndicator)
     lateinit var mMessageIndicator: ImageView
+    @BindView(R.id.list_chat_room_messageSeenIndicator)
+    lateinit var mMessageSeenIndicator: ImageView
+
+    lateinit var mLiveFriendsServices: LiveFriendsServices
 
     init {
         ButterKnife.bind(this, itemView)
+        mLiveFriendsServices = LiveFriendsServices().getInstant()
     }
 
     fun populate(context: Context, chatRoom: ChatRoom, currentUserEmail: String) {
@@ -34,9 +41,16 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(mUserPicture)
         mUsername.text = chatRoom!!.friendName
 
+        if(chatRoom.lastMessageSenderEmail != currentUserEmail) {
+            mMessageSeenIndicator.isVisible = false
+        } else {
+            mMessageSeenIndicator.isVisible = true
+            mLiveFriendsServices.isSeenMessage(mMessageSeenIndicator, currentUserEmail, chatRoom.friendEmail)
+        }
+
         var lastMessageSent = chatRoom!!.lastMessage
-        if(lastMessageSent.length > 80) {
-            lastMessageSent = lastMessageSent.substring(0,80)+"..."
+        if(lastMessageSent.length > 42) {
+            lastMessageSent = lastMessageSent.substring(0,42)+"..."
         }
         if(!chatRoom.sentLastMessage) {
             lastMessageSent += "(Draft)"

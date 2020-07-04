@@ -44,7 +44,12 @@
         <activity android:name=".Activities.MessagesActivity"
             android:parentActivityName=".Activities.InboxActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".Activities.ImageActivity"
+            android:theme="@style/AppTheme.SlidrActivityTheme"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".Notification.NotificationMessagingService">
             <intent-filter>

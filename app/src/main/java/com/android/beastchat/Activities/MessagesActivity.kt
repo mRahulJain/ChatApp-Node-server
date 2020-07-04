@@ -11,7 +11,8 @@ class MessagesActivity : BaseFragmentActivity() {
     override fun createFragment(): Fragment {
         val friendDetails = intent!!.getStringArrayListExtra(EXTRA_FRIEND_DETAILS)
 
-        supportActionBar!!.title = friendDetails[2]
+//        supportActionBar!!.title = friendDetails[2]
+        supportActionBar!!.hide()
         return MessageFragment().newInstant(friendDetails)
     }
 

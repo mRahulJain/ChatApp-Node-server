@@ -51,11 +51,17 @@ class FriendRequestsFragment : BaseFragments(), FriendRequestsAdapter.OnOptionLi
             Log.d("myError", "${e.localizedMessage}")
         }
         mSocket.connect()
+
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLiveFriendsServices.putUserOnline(mSocket, mUserEmailString)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mSocket.disconnect()
     }
 
     override fun onCreateView(
