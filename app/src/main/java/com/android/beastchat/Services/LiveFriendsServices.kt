@@ -132,7 +132,7 @@ class LiveFriendsServices {
         })
     }
 
-    fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter, userEmail: String) : ValueEventListener{
+    fun getAllMessages(recyclerView: RecyclerView, textView: TextView, imageView: RoundedImageView, messagesAdapter: MessagesAdapter, userEmail: String, friendEmail: String) : ValueEventListener{
         val listMessages = arrayListOf<Message>()
         val listener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -158,6 +158,12 @@ class LiveFriendsServices {
                     textView.isVisible = false
                     imageView.isVisible = false
                     messagesAdapter.setmMessages(listMessages)
+                    var lastReadRef = FirebaseDatabase.getInstance()
+                        .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
+                        .child(constants().encodeEmail(userEmail))
+                        .child(constants().encodeEmail(friendEmail))
+                        .child("lastMessageRead")
+                    lastReadRef.setValue(true)
                 }
             }
 
@@ -606,15 +612,11 @@ class LiveFriendsServices {
                     }
                 }
                 if(getData!!.userPicture != null) {
-                    if(getData.userPicture == constants().DEFAULT_USER_PICTURE) {
-                        mImageView.scaleType = ImageView.ScaleType.CENTER
-                    } else {
-                        mImageView.scaleType
+                    if(getData.userPicture != constants().DEFAULT_USER_PICTURE) {
+                        Picasso.with(context)
+                            .load(getData!!.userPicture)
+                            .into(mImageView)
                     }
-
-                    Picasso.with(context)
-                        .load(getData!!.userPicture)
-                        .into(mImageView)
                 }
                 if(getData!!.email != null) {
                     mEmail.text = getData!!.email

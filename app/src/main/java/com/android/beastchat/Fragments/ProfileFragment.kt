@@ -136,9 +136,13 @@ class ProfileFragment : BaseFragments(),
     }
 
     private fun loadProfile() {
-        Picasso.with(activity!!)
-            .load(mSharedPreferences.getString(constants().USER_PICTURE, ""))
-            .into(mUserPicture)
+        if(mSharedPreferences.getString(constants().USER_PICTURE, "") != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(activity!!)
+                .load(mSharedPreferences.getString(constants().USER_PICTURE, ""))
+                .into(mUserPicture)
+        } else {
+            mUserPicture.setImageResource(R.drawable.user_image)
+        }
         mUserEmail.text = mUserEmailString
         mUserName.text = mSharedPreferences.getString(constants().USER_NAME, "")
         mAbout.text = mSharedPreferences.getString(constants().USER_ABOUT, "")

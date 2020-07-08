@@ -22,11 +22,18 @@ class constants {
     val FIREBASE_PATH_USER_CHATROOM = "userChatRoom"
     val FIREBASE_PATH_USER_ONLINE = "userStatus"
 
+    val USER_TYPE_FRIEND_MESSAGES = "1.1"
+    val USER_TYPE_FRIEND_FRIENDS = "1.2"
+    val USER_TYPE_REQUESTED = "2"
+    val USER_TYPE_RECEIVED = "3"
+    val USER_TYPE_USER = "4"
+    val USER_TYPE_SELF = "5"
+
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")
     }
 
-    val DEFAULT_USER_PICTURE = "https://i7.pngguru.com/preview/527/663/825/logo-person-user-person-icon.jpg"
+    val DEFAULT_USER_PICTURE = ""
 
     fun isIncludedInMap(userHashMap : HashMap<String, User>, user: User) : Boolean {
         return userHashMap!= null && userHashMap.size != 0 &&

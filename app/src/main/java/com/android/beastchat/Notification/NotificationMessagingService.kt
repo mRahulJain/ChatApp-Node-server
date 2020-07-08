@@ -8,7 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -22,6 +25,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
+
 
 class NotificationMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
@@ -71,13 +75,13 @@ class NotificationMessagingService : FirebaseMessagingService() {
             }
         }
 
-        lateinit var myBitMap :Bitmap
+        var myBitMap :Bitmap = drawableToBitmap(resources.getDrawable(R.drawable.user_image))!!
         try {
             val url = URL(picture)
             val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            connection.setDoInput(true)
+            connection.doInput = true
             connection.connect()
-            val input: InputStream = connection.getInputStream()
+            val input: InputStream = connection.inputStream
             myBitMap = BitmapFactory.decodeStream(input)
         } catch (e: IOException) {
             e.printStackTrace()
@@ -111,5 +115,20 @@ class NotificationMessagingService : FirebaseMessagingService() {
         }
 
         nm.notify(0, clickableNotification.build())
+    }
+
+    fun drawableToBitmap(drawable: Drawable): Bitmap? {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+        drawable.draw(canvas)
+        return bitmap
     }
 }

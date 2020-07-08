@@ -99,13 +99,6 @@ class MessageFragment : BaseFragments() {
         mFriendPictureString = friendDetails!![1]
         mFriendNameString = friendDetails!![2]
         mUserEmailString = mSharedPreferences.getString(constants().USER_EMAIL, "")!!
-
-        var lastReadRef = FirebaseDatabase.getInstance()
-            .getReference().child(constants().FIREBASE_PATH_USER_CHATROOM)
-            .child(constants().encodeEmail(mUserEmailString))
-            .child(constants().encodeEmail(mFriendEmailString))
-            .child("lastMessageRead")
-        lastReadRef.setValue(true)
     }
 
     override fun onCreateView(
@@ -115,16 +108,23 @@ class MessageFragment : BaseFragments() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_messages, container, false)
         mUnbinder = ButterKnife.bind(this, rootView)
-
-        Picasso.with(activity!!)
-            .load(mFriendPictureString)
-            .into(mFriendPicture)
+        if(mFriendPictureString != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(activity!!)
+                .load(mFriendPictureString)
+                .into(mFriendPicture)
+        } else {
+            mFriendPicture.setImageResource(R.drawable.user_image)
+        }
         mFriendName.text = mFriendNameString
 
         //toolbar
-        Picasso.with(context)
-            .load(mFriendPictureString)
-            .into(mPictureToolbar)
+        if(mFriendPictureString != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(context)
+                .load(mFriendPictureString)
+                .into(mPictureToolbar)
+        } else {
+            mPictureToolbar.setImageResource(R.drawable.user_image)
+        }
         mNameToolbar.text = mFriendNameString
 
         val adapter = MessagesAdapter(activity!! as BaseFragmentActivity, mUserEmailString, mFriendEmailString)
@@ -133,7 +133,7 @@ class MessageFragment : BaseFragments() {
             .getReference().child(constants().FIREBASE_PATH_USER_MESSAGES)
             .child(constants().encodeEmail(mUserEmailString))
             .child(constants().encodeEmail(mFriendEmailString))
-        mGetAllMessagesListener = mLiveFriendsServices.getAllMessages(mRecyclerView, mFriendName, mFriendPicture, adapter, mUserEmailString)
+        mGetAllMessagesListener = mLiveFriendsServices.getAllMessages(mRecyclerView, mFriendName, mFriendPicture, adapter, mUserEmailString, mFriendEmailString)
         mGetAllMessagesReference.addValueEventListener(mGetAllMessagesListener)
         mRecyclerView.adapter = adapter
 
@@ -192,6 +192,7 @@ class MessageFragment : BaseFragments() {
     private fun setProfile() {
         val intent = Intent(context, OtherProfileActivity::class.java)
         intent.putExtra("email", mFriendEmailString)
+        intent.putExtra("userType", constants().USER_TYPE_FRIEND_MESSAGES)
         startActivity(intent)
     }
 

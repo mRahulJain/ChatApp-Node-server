@@ -51,16 +51,17 @@
                 android:layout_centerHorizontal="true"
                 app:riv_border_color="#333333"
                 app:riv_oval="true"
-                android:layout_width="220dp"
-                android:layout_height="220dp"/>
+                android:layout_width="160dp"
+                android:layout_height="160dp"/>
             <ImageView
-                android:background="@drawable/friend_request_background"
-                android:layout_marginRight="18dp"
-                android:layout_marginBottom="18dp"
-                android:src="@drawable/ic_person_add"
+                android:background="@drawable/friend_request_approved"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_sms"
                 android:padding="11dp"
+                android:clickable="true"
                 android:layout_gravity="bottom|right"
-                android:id="@+id/fragment_other_profile_action"
+                android:id="@+id/fragment_other_profile_action1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"/>
         </FrameLayout>

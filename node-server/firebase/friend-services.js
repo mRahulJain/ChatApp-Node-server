@@ -198,13 +198,15 @@ function sendOrDeleteFriendRequest(socket, io) {
 function detectDisconnection(socket, io) {
   socket.once('disconnect', function(){
     var db = admin.database();
-    var userStatusRef = db.ref('userStatus')
-    .child(encodeEmail(onlineUserEmail));
+    if(onlineUserEmail != '') {
+      var userStatusRef = db.ref('userStatus')
+      .child(encodeEmail(onlineUserEmail));
 
-    var userStatus = {
-      status: false
-    };
-    userStatusRef.set(userStatus);
+      var userStatus = {
+        status: false
+      };
+      userStatusRef.set(userStatus);
+    }
   });
 }
 

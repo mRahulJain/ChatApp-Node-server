@@ -3,11 +3,13 @@ package com.android.beastchat.Views.FriendViews
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.User
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
@@ -31,8 +33,12 @@ class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.tag = user
 
         mUserName.text = user!!.username
-        Picasso.with(context)
-            .load(user!!.userPicture)
-            .into(mUserPicture)
+        if(user!!.userPicture != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(context)
+                .load(user!!.userPicture)
+                .into(mUserPicture)
+        } else {
+            mUserPicture.setImageResource(R.drawable.user_image)
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.ChatRoom
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
 import com.makeramen.roundedimageview.RoundedImageView
@@ -36,9 +37,14 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun populate(context: Context, chatRoom: ChatRoom, currentUserEmail: String) {
         itemView.tag = chatRoom
-        Picasso.with(context)
-            .load(chatRoom!!.friendPicture)
-            .into(mUserPicture)
+
+        if(chatRoom!!.friendPicture != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(context)
+                .load(chatRoom!!.friendPicture)
+                .into(mUserPicture)
+        } else {
+            mUserPicture.setImageResource(R.drawable.user_image)
+        }
         mUsername.text = chatRoom!!.friendName
 
         if(chatRoom.lastMessageSenderEmail != currentUserEmail) {

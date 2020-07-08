@@ -7,6 +7,7 @@ import com.android.beastchat.Fragments.OtherProfileFragment
 class OtherProfileActivity : BaseFragmentActivity() {
 
     var email: String = ""
+    var type: String = ""
 
     override fun createFragment(): Fragment {
         return OtherProfileFragment().newInstant()
@@ -16,6 +17,7 @@ class OtherProfileActivity : BaseFragmentActivity() {
         super.onCreate(savedInstanceState)
 
         email = intent.getStringExtra("email")
+        type = intent.getStringExtra("userType")
 
         supportActionBar!!.hide()
     }

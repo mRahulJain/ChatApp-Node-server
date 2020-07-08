@@ -8,20 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.android.beastchat.Activities.ImageActivity
+import com.android.beastchat.Activities.MessagesActivity
 import com.android.beastchat.Activities.OtherProfileActivity
+import com.android.beastchat.Entities.User
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveAccountServices
 import com.android.beastchat.Services.LiveFriendsServices
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import io.socket.client.IO
 import java.net.URISyntaxException
 
@@ -32,6 +33,9 @@ class OtherProfileFragment : BaseFragments() {
     private lateinit var mLiveAccountServices: LiveAccountServices
     private lateinit var mUnbinder: Unbinder
     private lateinit var mUserEmailString: String
+    private lateinit var mUserType: String
+    private var mImageURL: String = constants().DEFAULT_USER_PICTURE
+    private lateinit var mGetAllFriendRequestsReference : DatabaseReference
 
     @BindView(R.id.fragment_other_profile_close)
     lateinit var mClose: ImageView
@@ -41,7 +45,7 @@ class OtherProfileFragment : BaseFragments() {
     lateinit var mImageView: ImageView
     @BindView(R.id.fragment_other_profile_userAbout)
     lateinit var mAbout: TextView
-    @BindView(R.id.fragment_other_profile_action)
+    @BindView(R.id.fragment_other_profile_action1)
     lateinit var mAction: ImageView
     @BindView(R.id.fragment_other_profile_userName)
     lateinit var mUsername: TextView
@@ -51,7 +55,6 @@ class OtherProfileFragment : BaseFragments() {
     lateinit var mGender: TextView
     @BindView(R.id.fragment_other_profile_userFriendsCount)
     lateinit var mFriendCount: TextView
-
 
     fun newInstant() : OtherProfileFragment {
         return OtherProfileFragment()
@@ -68,6 +71,7 @@ class OtherProfileFragment : BaseFragments() {
         mSocket.connect()
 
         mUserEmailString = (activity!! as OtherProfileActivity).email
+        mUserType = (activity!! as OtherProfileActivity).type
         mLiveAccountServices = LiveAccountServices().getInstant()
         mLiveFriendsServices = LiveFriendsServices().getInstant()
     }
@@ -79,10 +83,34 @@ class OtherProfileFragment : BaseFragments() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_other_profile, container, false)
         mUnbinder = ButterKnife.bind(this, rootView)
+        mGetAllFriendRequestsReference = FirebaseDatabase.getInstance().getReference()
+            .child(constants().FIREBASE_FRIEND_REQUEST_RECEIVED_PATH)
+            .child(constants().encodeEmail(mUserEmailString))
 
+        intializeImageURL()
         assignValues()
-
         return rootView
+    }
+
+    private fun intializeImageURL() {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_USERS_PATH)
+            .child(constants().encodeEmail(mUserEmailString))
+            .child("userPicture")
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                mImageURL = p0.value.toString()
+
+            }
+        })
+    }
+
+    @OnClick(R.id.fragment_other_profile_action1)
+    fun setmAction1() {
+        activity!!.finish()
     }
 
     private fun assignValues() {
@@ -109,25 +137,12 @@ class OtherProfileFragment : BaseFragments() {
 
     @OnClick(R.id.fragment_other_profile_userPicture)
     fun setmClickUserPicture() {
-        val databaseReference = FirebaseDatabase.getInstance()
-            .getReference().child(constants().FIREBASE_USERS_PATH)
-            .child(constants().encodeEmail(mUserEmailString))
-            .child("userPicture")
-        databaseReference.addValueEventListener(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                val mImageURL = p0.value.toString()
-                if(mImageURL != constants().DEFAULT_USER_PICTURE) {
-                    val intent = Intent(context, ImageActivity::class.java)
-                    intent.putExtra("imageUri" , mImageURL)
-                    startActivity(intent)
-                    activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                }
-            }
-
-        })
+        if(mImageURL != constants().DEFAULT_USER_PICTURE) {
+            val intent = Intent(context, ImageActivity::class.java)
+            intent.putExtra("imageUri" , mImageURL)
+            startActivity(intent)
+            activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
     }
 
     override fun onDestroyView() {

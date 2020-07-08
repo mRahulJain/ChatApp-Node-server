@@ -1,5 +1,6 @@
 package com.android.beastchat.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Activities.OtherProfileActivity
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R

@@ -142,9 +142,7 @@ class LiveAccountServices {
         sharedPreference.edit().putString(
             constants().USER_PICTURE, imageLinkString
         ).apply()
-        Picasso.with(mActivity)
-            .load(imageLinkString)
-            .into(mImageView)
+        mImageView.setImageResource(R.drawable.user_image)
     }
 
     fun sendLoginInfo(userEmail: EditText, userPassword: EditText, socket: Socket,

@@ -40,9 +40,13 @@ class FindFriendsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     ) {
         itemView.tag = user
         mUsername.text = user!!.username
-        Picasso.with(context)
-            .load(user!!.userPicture)
-            .into(mUserPictures)
+        if(user!!.userPicture != constants().DEFAULT_USER_PICTURE) {
+            Picasso.with(context)
+                .load(user!!.userPicture)
+                .into(mUserPictures)
+        } else {
+            mUserPictures.setImageResource(R.drawable.user_image)
+        }
 
         if(constants().isIncludedInMap(mFriendRequestSentMap, user)) {
             mAddFriend.isVisible = true

@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:background="@drawable/edit_text_background"
     android:padding="9dp"
+    android:id="@+id/list_friend_requests_parent"
     android:layout_margin="4dp"
     android:layout_height="wrap_content">
     <com.makeramen.roundedimageview.RoundedImageView

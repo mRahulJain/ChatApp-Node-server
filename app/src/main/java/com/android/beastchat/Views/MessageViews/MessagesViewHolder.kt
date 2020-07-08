@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.Message
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
 import com.makeramen.roundedimageview.RoundedImageView
@@ -48,10 +49,12 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             mFriendPicture.isVisible = true
             mFriendText.isVisible = true
 
-            if(message.messageSenderPicture != "no-image") {
+            if(message.messageSenderPicture != constants().DEFAULT_USER_PICTURE) {
                 Picasso.with(context)
                     .load(message.messageSenderPicture)
                     .into(mFriendPicture)
+            } else {
+                mUserPicture.setImageResource(R.drawable.user_image)
             }
             mFriendText.text = message.messageText
         } else {
@@ -67,9 +70,13 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             mUserPicture.isVisible = true
             mFriendPicture.isVisible = false
             mFriendText.isVisible = false
-            Picasso.with(context)
-                .load(message.messageSenderPicture)
-                .into(mUserPicture)
+            if(message.messageSenderPicture != constants().DEFAULT_USER_PICTURE) {
+                Picasso.with(context)
+                    .load(message.messageSenderPicture)
+                    .into(mUserPicture)
+            } else {
+                mUserPicture.setImageResource(R.drawable.user_image)
+            }
             mUserText.text = message.messageText
         }
     }
