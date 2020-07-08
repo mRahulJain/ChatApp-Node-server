@@ -601,8 +601,17 @@ class LiveFriendsServices {
                 val getData = p0.getValue(User::class.java)
                 if(getData!!.about != null) {
                     mAbout.text = getData!!.about
+                    if(getData!!.about == "") {
+                        mAbout.isVisible = false
+                    }
                 }
                 if(getData!!.userPicture != null) {
+                    if(getData.userPicture == constants().DEFAULT_USER_PICTURE) {
+                        mImageView.scaleType = ImageView.ScaleType.CENTER
+                    } else {
+                        mImageView.scaleType
+                    }
+
                     Picasso.with(context)
                         .load(getData!!.userPicture)
                         .into(mImageView)
@@ -619,7 +628,6 @@ class LiveFriendsServices {
                 }
                 getFriendCount(mFriendCount, getData!!.email)
             }
-
         })
     }
 }

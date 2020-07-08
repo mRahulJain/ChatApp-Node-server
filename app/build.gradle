@@ -62,4 +62,6 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.r0adkll:slidableactivity:2.1.0'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

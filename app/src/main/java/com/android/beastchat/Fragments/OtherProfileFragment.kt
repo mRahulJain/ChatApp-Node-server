@@ -1,5 +1,6 @@
 package com.android.beastchat.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +12,16 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
+import com.android.beastchat.Activities.ImageActivity
 import com.android.beastchat.Activities.OtherProfileActivity
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveAccountServices
 import com.android.beastchat.Services.LiveFriendsServices
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import io.socket.client.IO
 import java.net.URISyntaxException
 
@@ -38,8 +43,6 @@ class OtherProfileFragment : BaseFragments() {
     lateinit var mAbout: TextView
     @BindView(R.id.fragment_other_profile_action)
     lateinit var mAction: ImageView
-    @BindView(R.id.fragment_other_profile_relation)
-    lateinit var mRelation: TextView
     @BindView(R.id.fragment_other_profile_userName)
     lateinit var mUsername: TextView
     @BindView(R.id.fragment_other_profile_userEmail)
@@ -102,6 +105,29 @@ class OtherProfileFragment : BaseFragments() {
     @OnClick(R.id.fragment_other_profile_close)
     fun setmClose() {
         activity!!.finish()
+    }
+
+    @OnClick(R.id.fragment_other_profile_userPicture)
+    fun setmClickUserPicture() {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_USERS_PATH)
+            .child(constants().encodeEmail(mUserEmailString))
+            .child("userPicture")
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val mImageURL = p0.value.toString()
+                if(mImageURL != constants().DEFAULT_USER_PICTURE) {
+                    val intent = Intent(context, ImageActivity::class.java)
+                    intent.putExtra("imageUri" , mImageURL)
+                    startActivity(intent)
+                    activity!!.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
+            }
+
+        })
     }
 
     override fun onDestroyView() {
