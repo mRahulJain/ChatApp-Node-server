@@ -47,9 +47,12 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             mUserText.isVisible = false
             mFriendPicture.isVisible = true
             mFriendText.isVisible = true
-            Picasso.with(context)
-                .load(message.messageSenderPicture)
-                .into(mFriendPicture)
+
+            if(message.messageSenderPicture != "no-image") {
+                Picasso.with(context)
+                    .load(message.messageSenderPicture)
+                    .into(mFriendPicture)
+            }
             mFriendText.text = message.messageText
         } else {
             mainLayoutSender.setBackgroundResource(0)

@@ -20,7 +20,10 @@ import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -55,9 +58,26 @@ class LiveAccountServices {
         return mLiveAccountServices
     }
 
+    fun editProfile(refAbout: DatabaseReference,
+                    refUsername: DatabaseReference, refPassword: DatabaseReference,
+                    refGender: DatabaseReference, items: ArrayList<String>, mSharedPreferences: SharedPreferences) {
+        refAbout.setValue(items[0])
+        refUsername.setValue(items[1])
+        refPassword.setValue(items[2])
+        refGender.setValue(items[3])
+        mSharedPreferences!!.edit().putString(
+            constants().USER_NAME, items[1]
+        ).apply()
+        mSharedPreferences!!.edit().putString(
+            constants().USER_ABOUT, items[0]
+        ).apply()
+        mSharedPreferences.edit().putString(
+            constants().USER_GENDER, items[3]
+        ).apply()
+    }
+
     fun changeProfilePhoto(databaseReference: DatabaseReference, storageReference: StorageReference, uri: Uri, mActivity: BaseFragmentActivity,
                            mCurrentUserEmail: String, mImageView: ImageView, sharedPreferences: SharedPreferences) {
-
         lateinit var mBitMap: Bitmap
         lateinit var mScaledBitMap: Bitmap
         var byteArrayOutputStream= ByteArrayOutputStream()
@@ -114,6 +134,17 @@ class LiveAccountServices {
         }.addOnFailureListener {
             Log.d("myCH", it.localizedMessage)
         }
+    }
+
+    fun removeProfilePhoto(mActivity: BaseFragmentActivity,mImageView: ImageView, databaseReference: DatabaseReference, sharedPreference: SharedPreferences) {
+        val imageLinkString = constants().DEFAULT_USER_PICTURE
+        databaseReference.setValue(imageLinkString)
+        sharedPreference.edit().putString(
+            constants().USER_PICTURE, imageLinkString
+        ).apply()
+        Picasso.with(mActivity)
+            .load(imageLinkString)
+            .into(mImageView)
     }
 
     fun sendLoginInfo(userEmail: EditText, userPassword: EditText, socket: Socket,
@@ -271,6 +302,12 @@ class LiveAccountServices {
                                     ).apply()
                                     sharedPreference!!.edit().putString(
                                         constants().USER_PICTURE, photo
+                                    ).apply()
+                                    sharedPreference!!.edit().putString(
+                                        constants().USER_ABOUT, "Hey there! I am using SMS application!"
+                                    ).apply()
+                                    sharedPreference.edit().putString(
+                                        constants().USER_GENDER, "Not yet assigned"
                                     ).apply()
                                     val intent = Intent(activity, InboxActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK

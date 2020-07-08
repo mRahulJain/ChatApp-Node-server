@@ -1,6 +1,5 @@
 package com.android.beastchat.Notification
 
-import android.R.attr.src
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -23,7 +22,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
-
 
 class NotificationMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {

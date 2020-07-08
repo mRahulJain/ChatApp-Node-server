@@ -51,6 +51,9 @@
             android:theme="@style/AppTheme.SlidrActivityTheme"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".Activities.OtherProfileActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".Notification.NotificationMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

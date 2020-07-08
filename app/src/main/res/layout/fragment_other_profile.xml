@@ -7,107 +7,96 @@
     android:background="@color/myBackground"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/fragment_other_profile_close"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:src="@drawable/ic_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/fragment_other_profile_title"
+            android:text="User's Profile"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <RelativeLayout
         android:layout_weight="1"
         android:id="@+id/frag"
-        app:layout_constraintBottom_toTopOf="@id/nav_viewP"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
-            android:id="@+id/fragment_profile_imageContainer"
-            android:layout_marginTop="16dp"
+            android:id="@+id/fragment_other_profile_imageContainer"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/fragment_profile_userPicture"
+            <ImageView
+                android:id="@+id/fragment_other_profile_userPicture"
                 android:scaleType="centerCrop"
-                app:riv_corner_radius="30dip"
                 android:src="@drawable/user_image"
                 android:layout_marginBottom="10dp"
-                app:riv_border_width="3dip"
                 android:layout_centerHorizontal="true"
-                app:riv_border_color="#333333"
-                app:riv_oval="true"
-                android:layout_width="160dp"
-                android:layout_height="160dp"/>
-            <ImageView
-                android:background="@drawable/badge_view"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_camera"
-                android:padding="11dp"
-                android:layout_gravity="bottom|right"
-                android:id="@+id/fragment_profile_change_profile"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="240dp"/>
         </FrameLayout>
-        <TextView
-            android:textAllCaps="false"
-            android:textSize="22sp"
-            android:layout_marginRight="30dp"
-            android:layout_centerInParent="true"
-            android:id="@+id/fragment_profile_editProfile"
-            android:layout_below="@+id/fragment_profile_imageContainer"
-            android:text="Edit Profile"
-            android:textStyle="bold"
-            android:textColor="@color/colorDullWhile"
-            android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <ScrollView
-            android:id="@+id/fragment_profile_scrollArea"
-            android:layout_below="@+id/fragment_profile_editProfile"
+            android:id="@+id/fragment_other_profile_scrollArea"
+            android:layout_below="@+id/fragment_other_profile_imageContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userAboutCard"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="12dp"
+                <LinearLayout
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_gravity="center"
                         android:gravity="center"
-                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:textSize="20sp"
+                        android:text="Hey there! I am using SMS appliation!"
+                        android:id="@+id/fragment_other_profile_userAbout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
-                            android:padding="8dp"
-                            android:textSize="16sp"
-                            android:text="About"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:padding="8dp"
-                            android:textSize="20sp"
-                            android:text="Hey there! I am using SMS appliation!"
-                            android:id="@+id/fragment_profile_userAbout"
-                            android:layout_width="match_parent"
-                            android:textColor="@color/colorWhite"
-                            android:layout_centerInParent="true"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/fragment_other_profile_action"
+                    android:padding="9dp"
+                    android:background="@drawable/friend_request_background"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person_add"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+                <TextView
+                    android:id="@+id/fragment_other_profile_relation"
+                    android:layout_gravity="center"
+                    android:text="Here is the relation between you and this user"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userNameCard"
+                    android:id="@+id/fragment_other_profile_userNameCard"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="1dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="4dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:layout_width="match_parent"
@@ -132,14 +121,14 @@
                             android:textSize="20sp"
                             android:text="ABC"
                             android:textColor="@color/colorWhite"
-                            android:id="@+id/fragment_profile_userName"
+                            android:id="@+id/fragment_other_profile_userName"
                             android:layout_width="match_parent"
                             android:layout_centerInParent="true"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userEmailCard"
+                    android:id="@+id/fragment_other_profile_userEmailCard"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="1dp"
                     android:layout_marginLeft="20dp"
@@ -168,7 +157,7 @@
                             android:padding="8dp"
                             android:textSize="20sp"
                             android:text="abc@gmail.com"
-                            android:id="@+id/fragment_profile_userEmail"
+                            android:id="@+id/fragment_other_profile_userEmail"
                             android:layout_width="match_parent"
                             android:textColor="@color/colorWhite"
                             android:layout_centerInParent="true"
@@ -176,45 +165,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userPasswordCard"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
-                            android:padding="8dp"
-                            android:textSize="16sp"
-                            android:text="Password"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:padding="8dp"
-                            android:textSize="20sp"
-                            android:text="HereIsPassword"
-                            android:inputType="textPassword"
-                            android:id="@+id/fragment_profile_userPassword"
-                            android:layout_width="match_parent"
-                            android:textColor="@color/colorWhite"
-                            android:layout_centerInParent="true"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userGenderCard"
+                    android:id="@+id/fragment_other_profile_userGenderCard"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="1dp"
                     android:layout_marginLeft="20dp"
@@ -243,7 +194,7 @@
                             android:padding="8dp"
                             android:textSize="20sp"
                             android:text="Male"
-                            android:id="@+id/fragment_profile_userGender"
+                            android:id="@+id/fragment_other_profile_userGender"
                             android:layout_width="match_parent"
                             android:textColor="@color/colorWhite"
                             android:layout_centerInParent="true"
@@ -251,7 +202,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fragment_profile_userFriendsCountCard"
+                    android:id="@+id/fragment_other_profile_userFriendsCountCard"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="1dp"
                     android:layout_marginLeft="20dp"
@@ -280,7 +231,7 @@
                             android:padding="8dp"
                             android:textSize="20sp"
                             android:text="10"
-                            android:id="@+id/fragment_profile_userFriendsCount"
+                            android:id="@+id/fragment_other_profile_userFriendsCount"
                             android:layout_width="match_parent"
                             android:textColor="@color/colorWhite"
                             android:layout_centerInParent="true"
@@ -289,32 +240,5 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </ScrollView>
-        <Button
-            android:id="@+id/fragment_profile_signOut"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="20dp"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:translationZ="20dp"
-            android:elevation="20dp"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_marginBottom="30dp"
-            android:drawablePadding="12dp"
-            android:drawableLeft="@drawable/ic_signout"
-            android:textColor="#817889"
-            android:textAllCaps="false"
-            android:text="Sign Out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </RelativeLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_viewP"
-        android:layout_width="match_parent"
-        android:theme="@style/myBottomStyle"
-        app:labelVisibilityMode="unlabeled"
-        android:layout_height="wrap_content"
-        app:menu="@menu/menu_bottom_navigation"/>
 </LinearLayout>

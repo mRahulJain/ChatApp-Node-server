@@ -25,11 +25,9 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
@@ -562,5 +560,66 @@ class LiveFriendsServices {
             }
         }
         return searchedList
+    }
+
+    fun getFriendCount(mFriendCount: TextView, mUserEmailString: String) {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference()
+            .child(constants().FIREBASE_PATH_USER_FRIENDS)
+            .child(constants().encodeEmail(mUserEmailString))
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var count = 0
+                for(snap in p0.children) {
+                    count++
+                }
+                mFriendCount.text = count.toString()
+            }
+
+        })
+    }
+
+    fun getFriendDetails(
+        context: Context,
+        databaseReference: DatabaseReference,
+        mTitle: TextView,
+        mImageView: ImageView,
+        mAbout: TextView,
+        mUsername: TextView,
+        mEmail: TextView,
+        mGender: TextView,
+        mFriendCount: TextView
+    ) {
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val getData = p0.getValue(User::class.java)
+                if(getData!!.about != null) {
+                    mAbout.text = getData!!.about
+                }
+                if(getData!!.userPicture != null) {
+                    Picasso.with(context)
+                        .load(getData!!.userPicture)
+                        .into(mImageView)
+                }
+                if(getData!!.email != null) {
+                    mEmail.text = getData!!.email
+                }
+                if(getData!!.gender != null) {
+                    mGender.text = getData!!.gender
+                }
+                if(getData!!.username != null) {
+                    mUsername.text = getData!!.username
+                    mTitle.text = "${getData!!.username}'s Profile"
+                }
+                getFriendCount(mFriendCount, getData!!.email)
+            }
+
+        })
     }
 }

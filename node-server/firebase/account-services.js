@@ -76,7 +76,10 @@ function registerUser(socket, io) {
       userRef.set({
         email: data.email,
         username: data.username,
-        userPicture: 'https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png',
+        userPicture: 'https://i7.pngguru.com/preview/527/663/825/logo-person-user-person-icon.jpg',
+        about: 'Hey there! I am using SMS application!',
+        gender: 'Not yet assigned',
+        friendsCount: 0,
         dateJoined: date,
         hasLoggedIn: false,
         password: data.password

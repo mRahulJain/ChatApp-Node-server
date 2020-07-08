@@ -17,10 +17,10 @@
             android:scaleType="centerCrop"
             app:riv_corner_radius="30dip"
             android:layout_gravity="bottom"
+            android:src="@drawable/user_image"
             app:riv_border_width="3dip"
             android:layout_centerVertical="true"
             app:riv_border_color="#333333"
-            android:src="@drawable/ic_person"
             app:riv_oval="true"
             android:layout_width="40dp"
             android:layout_height="40dp"/>
@@ -94,7 +94,7 @@
             app:riv_border_width="3dip"
             android:layout_centerVertical="true"
             app:riv_border_color="#333333"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/user_image"
             app:riv_oval="true"
             android:layout_width="40dp"
             android:layout_height="40dp"/>

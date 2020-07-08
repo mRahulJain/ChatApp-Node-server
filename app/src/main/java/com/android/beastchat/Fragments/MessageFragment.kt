@@ -1,5 +1,6 @@
 package com.android.beastchat.Fragments
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +17,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
+import com.android.beastchat.Activities.OtherProfileActivity
 import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.Entities.Message
 import com.android.beastchat.Models.constants
@@ -174,16 +176,35 @@ class MessageFragment : BaseFragments() {
         activity!!.finish()
     }
 
+    @OnClick(R.id.fragment_messages_friendNameToolbar)
+    fun setmViewFriendProfileThroughToolbar() {
+        setProfile()
+    }
+    @OnClick(R.id.fragment_messages_friendPicture)
+    fun setmViewFriendProfileThroughImage() {
+        setProfile()
+    }
+    @OnClick(R.id.fragment_messages_friendName)
+    fun setmViewFriendProfileThroughName() {
+        setProfile()
+    }
+
+    private fun setProfile() {
+        val intent = Intent(context, OtherProfileActivity::class.java)
+        intent.putExtra("email", mFriendEmailString)
+        startActivity(intent)
+    }
+
     @OnClick(R.id.fragment_messages_sendMessage)
     fun mSendMessage() {
-        if(mMessageBox.text.toString() == "") {
+        if(mMessageBox.text.toString().trim() == "") {
             Toast.makeText(activity!!, "Enter something", Toast.LENGTH_SHORT).show()
         } else {
             var chatRoom = ChatRoom(
                 mFriendPictureString,
                 mFriendNameString,
                 mFriendEmailString,
-                mMessageBox.text.toString(),
+                mMessageBox.text.toString().trim(),
                 mUserEmailString,
                 lastMessageRead = true,
                 sentLastMessage = true
@@ -195,7 +216,7 @@ class MessageFragment : BaseFragments() {
             val newMessageReference = mGetAllMessagesReference.push()
             val message = Message(
                 messageId = newMessageReference.key!!,
-                messageText = mMessageBox.text.toString(),
+                messageText = mMessageBox.text.toString().trim(),
                 messageSenderEmail = mUserEmailString,
                 messageSenderPicture = mSharedPreferences.getString(constants().USER_PICTURE, "")!!
             )
@@ -206,7 +227,7 @@ class MessageFragment : BaseFragments() {
                     newMessageReference.key!!,
                     mUserEmailString,
                     mSharedPreferences.getString(constants().USER_PICTURE, "")!!,
-                    mMessageBox!!.text.toString(),
+                    mMessageBox!!.text.toString().trim(),
                     mFriendEmailString,
                     mSharedPreferences!!.getString(constants().USER_NAME, "")!!
                 )
@@ -232,7 +253,7 @@ class MessageFragment : BaseFragments() {
                 }
 
                 override fun onNext(t: String?) {
-                    if(t!!.isNotEmpty()) {
+                    if(t!!.trim().isNotEmpty()) {
                         var chatRoom = ChatRoom(
                             mFriendPictureString,
                             mFriendNameString,

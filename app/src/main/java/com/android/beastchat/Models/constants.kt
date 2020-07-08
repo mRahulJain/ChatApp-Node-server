@@ -8,6 +8,8 @@ class constants {
     val USER_EMAIL : String = "USER_EMAIL"
     val USER_NAME : String = "USER_NAME"
     val USER_PICTURE : String = "USER_PICTURE"
+    val USER_ABOUT: String = "Hey there! I am using SMS application!"
+    val USER_GENDER: String = "Not yet assigned"
 
     val FIREBASE_USERS_PATH = "users"
     val FIREBASE_FRIEND_REQUEST_SENT_PATH = "friendRequestSent"
@@ -23,6 +25,8 @@ class constants {
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")
     }
+
+    val DEFAULT_USER_PICTURE = "https://i7.pngguru.com/preview/527/663/825/logo-person-user-person-icon.jpg"
 
     fun isIncludedInMap(userHashMap : HashMap<String, User>, user: User) : Boolean {
         return userHashMap!= null && userHashMap.size != 0 &&
