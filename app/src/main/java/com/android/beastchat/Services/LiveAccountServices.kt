@@ -20,10 +20,7 @@ import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -74,6 +71,12 @@ class LiveAccountServices {
         mSharedPreferences.edit().putString(
             constants().USER_GENDER, items[3]
         ).apply()
+        FirebaseAuth.getInstance().currentUser!!.updatePassword(items[2])
+            .addOnSuccessListener {
+            }.addOnFailureListener {
+            }.addOnCompleteListener {
+                val currentUser = FirebaseAuth.getInstance().currentUser
+            }
     }
 
     fun changeProfilePhoto(databaseReference: DatabaseReference, storageReference: StorageReference, uri: Uri, mActivity: BaseFragmentActivity,
@@ -180,6 +183,7 @@ class LiveAccountServices {
                             if(it.isSuccessful) {
                                 val sendData = JSONObject()
                                 sendData.put("email", userEmail)
+                                sendData.put("password", userPassword)
                                 socket.emit("userInfo", sendData)
                             } else {
                                 Toast.makeText(
@@ -264,6 +268,9 @@ class LiveAccountServices {
                     userDetails.add(it.get("email") as String)
                     userDetails.add(it.get("photo") as String)
                     userDetails.add(it.get("displayName") as String)
+                    userDetails.add(it.get("gender") as String)
+                    userDetails.add(it.get("password") as String)
+                    userDetails.add(it.get("about") as String)
                     userDetails
                 } catch (e: JSONException) {
                     Log.e("myERROR", e.localizedMessage)
@@ -287,11 +294,20 @@ class LiveAccountServices {
                     val email = t[1]
                     val photo = t[2]
                     val userName = t[3]
+                    val gender = t[4]
+                    val password = t[5]
+                    val about = t[6]
 
                     if(!email.equals("error")) {
                         FirebaseAuth.getInstance().signInWithCustomToken(token)
                             .addOnCompleteListener {
                                 if(it.isSuccessful) {
+                                    Log.d("mCHECKHERE", password)
+                                    val databaseReference = FirebaseDatabase.getInstance()
+                                        .getReference().child(constants().FIREBASE_USERS_PATH)
+                                        .child(constants().encodeEmail(email))
+                                        .child("password")
+                                    databaseReference.setValue(password)
                                     sharedPreference!!.edit().putString(
                                         constants().USER_EMAIL, email
                                     ).apply()
@@ -302,10 +318,10 @@ class LiveAccountServices {
                                         constants().USER_PICTURE, photo
                                     ).apply()
                                     sharedPreference!!.edit().putString(
-                                        constants().USER_ABOUT, "Hey there! I am using SMS application!"
+                                        constants().USER_ABOUT, about
                                     ).apply()
                                     sharedPreference.edit().putString(
-                                        constants().USER_GENDER, "Not yet assigned"
+                                        constants().USER_GENDER, gender
                                     ).apply()
                                     val intent = Intent(activity, InboxActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -485,5 +501,13 @@ class LiveAccountServices {
 
     private fun isEmailValid(email : String) : Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun sendPasswordResetLink(mEmailString: String) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(mEmailString)
+            .addOnFailureListener {
+            }.addOnSuccessListener {
+            }.addOnCompleteListener {
+            }
     }
 }

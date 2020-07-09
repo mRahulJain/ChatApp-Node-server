@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import butterknife.*
 import com.android.beastchat.Activities.BaseFragmentActivity
@@ -31,6 +32,7 @@ class LoginFragment : BaseFragments() {
     @BindView(R.id.fragment_login_login_button) lateinit var mLoginButton : Button
     @BindView(R.id.fragment_login_register_button) lateinit var mRegisterButton : Button
     @BindView(R.id.fragment_login_animateLogin) lateinit var mAnimateLogin: LinearLayout
+    @BindView(R.id.fragment_login_forgotPassword) lateinit var mForgotPassword: TextView
 
     private lateinit var mUnbinder: Unbinder
     private lateinit var mSocket: io.socket.client.Socket
@@ -82,6 +84,12 @@ class LoginFragment : BaseFragments() {
     @OnClick(R.id.fragment_login_register_button)
     fun setmRegisterButton() {
         startActivity(Intent(activity, RegisterActivity::class.java))
+    }
+
+    @OnClick(R.id.fragment_login_forgotPassword)
+    fun setmForgotPassword() {
+        val customDialog = ForgotPasswordDialog(mActivity!!)
+        customDialog.show()
     }
 
     private fun tokenListener() : Emitter.Listener {

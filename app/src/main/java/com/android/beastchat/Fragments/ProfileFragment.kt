@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,14 +14,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.ImageActivity
-import com.android.beastchat.Activities.ProfileActivity
 import com.android.beastchat.Models.AndroidPermissions
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
@@ -71,6 +68,8 @@ class ProfileFragment : BaseFragments(),
     lateinit var mGender: TextView
     @BindView(R.id.fragment_profile_userFriendsCount)
     lateinit var mFriendsCount: TextView
+    @BindView(R.id.fragment_profile_passwordLength)
+    lateinit var mPasswordLength: TextView
 
     private var mRequestCamera = 100
     private var mRequestImage = 101
@@ -147,14 +146,14 @@ class ProfileFragment : BaseFragments(),
         mUserEmail.text = mUserEmailString
         mUserName.text = mSharedPreferences.getString(constants().USER_NAME, "")
         mAbout.text = mSharedPreferences.getString(constants().USER_ABOUT, "")
-        getPassword(mPassword)
+        getPassword(mPassword, mPasswordLength)
         mLiveFriendsServices.getFriendCount(mFriendsCount, mUserEmailString)
         mGender.text = mSharedPreferences.getString(constants().USER_GENDER, "")
         mLiveFriendsServices.isEmailVerifiedManually(mUserEmailString)
         mLiveFriendsServices.isEmailVerified(context!!, mUserEmail, mUserEmailString)
     }
 
-    private fun getPassword(mPassword: TextView) {
+    private fun getPassword(mPassword: TextView, mPasswordLength: TextView) {
         val databaseReference = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_USERS_PATH)
             .child(constants().encodeEmail(mUserEmailString))
@@ -166,6 +165,7 @@ class ProfileFragment : BaseFragments(),
             override fun onDataChange(p0: DataSnapshot) {
                 mExistingPassword = p0.value.toString()
                 mPassword.text = mExistingPassword
+                mPasswordLength.text = mExistingPassword.length.toString() + " characters"
             }
         })
     }

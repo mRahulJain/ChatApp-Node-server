@@ -61,6 +61,19 @@
         android:background="@drawable/edit_text_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <TextView
+        android:text="Forgot Password?"
+        android:textStyle="bold"
+        android:id="@+id/fragment_login_forgotPassword"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        android:textColor="@color/myColorRed"
+        android:alpha="0.6"
+        android:layout_gravity="right"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <FrameLayout
         android:outlineAmbientShadowColor="@color/colorBlack"
         android:layout_marginTop="30dp"

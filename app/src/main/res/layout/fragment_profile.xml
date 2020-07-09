@@ -84,7 +84,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:text="About"
@@ -120,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:layout_marginLeft="12dp"
@@ -158,7 +158,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:text="Email"
@@ -195,7 +195,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:text="Password"
@@ -212,6 +212,15 @@
                             android:layout_centerInParent="true"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
+                    <TextView
+                        android:textSize="10sp"
+                        android:id="@+id/fragment_profile_passwordLength"
+                        android:layout_marginRight="8dp"
+                        android:layout_gravity="center|right"
+                        android:text="0"
+                        android:textColor="@color/colorDullWhile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fragment_profile_userGenderCard"
@@ -233,7 +242,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:text="Gender"
@@ -270,7 +279,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:layout_marginLeft="12dp"
-                            android:textColor="@color/colorWhite"
+                            android:textColor="@color/colorDullWhile"
                             android:padding="8dp"
                             android:textSize="16sp"
                             android:text="Friends"
@@ -298,6 +307,7 @@
             android:translationZ="20dp"
             android:elevation="20dp"
             android:textStyle="bold"
+            android:layout_below="@+id/fragment_profile_scrollArea"
             android:textSize="18sp"
             android:gravity="center"
             android:layout_marginBottom="30dp"

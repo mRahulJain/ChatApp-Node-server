@@ -31,7 +31,10 @@ function logUserIn(socket, io) {
                 authToken: customToken,
                 email: data.email,
                 photo: snapshot.val().userPicture,
-                displayName: snapshot.val().username
+                displayName: snapshot.val().username,
+                gender: snapshot.val().gender,
+                about: snapshot.val().about,
+                password: data.password
               }
 
               userRef.child('hasLoggedIn').set(true);
@@ -79,7 +82,6 @@ function registerUser(socket, io) {
         userPicture: '',
         about: 'Hey there! I am using SMS application!',
         gender: 'Not yet assigned',
-        friendsCount: 0,
         dateJoined: date,
         hasLoggedIn: false,
         password: data.password
