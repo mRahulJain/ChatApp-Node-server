@@ -211,7 +211,7 @@ function detectDisconnection(socket, io) {
 }
 
 function encodeEmail(email) {
-  return email.replace('.',',');
+  return email.replace(/[.]/g,',');
 }
 
 module.exports = {

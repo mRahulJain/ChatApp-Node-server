@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -149,6 +150,8 @@ class ProfileFragment : BaseFragments(),
         getPassword(mPassword)
         mLiveFriendsServices.getFriendCount(mFriendsCount, mUserEmailString)
         mGender.text = mSharedPreferences.getString(constants().USER_GENDER, "")
+        mLiveFriendsServices.isEmailVerifiedManually(mUserEmailString)
+        mLiveFriendsServices.isEmailVerified(context!!, mUserEmail, mUserEmailString)
     }
 
     private fun getPassword(mPassword: TextView) {
@@ -171,6 +174,32 @@ class ProfileFragment : BaseFragments(),
     fun setmChangeProfile() {
         val bottomSheetChangeProfile = BottomSheetChangeProfile(this)
         bottomSheetChangeProfile.show(childFragmentManager, "change profile image")
+    }
+
+    @OnClick(R.id.fragment_profile_userEmail)
+    fun setmUserEmail() {
+        var count = 0
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_EMAIL_VERIFIED)
+            .child(constants().encodeEmail(mUserEmailString))
+            .child("isEmailVerified")
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if(count == 0) {
+                    count++
+                    if(p0.value == true) {
+                        val customDialog = EmailVerificationDialogFragment(mActivity!!, true)
+                        customDialog.show()
+                    } else {
+                        val customDialog = EmailVerificationDialogFragment(mActivity!!, false)
+                        customDialog.show()
+                    }
+                }
+            }
+        })
     }
 
     @OnClick(R.id.fragment_profile_editProfile)

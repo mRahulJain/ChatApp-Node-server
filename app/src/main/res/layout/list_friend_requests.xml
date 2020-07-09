@@ -21,13 +21,26 @@
     <TextView
         android:id="@+id/list_friend_requests_userName"
         android:text="Rahul Jain"
-        android:textSize="18sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:layout_margin="3dp"
         android:textColor="@color/colorWhite"
-        android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/list_friend_requests_verifiedUser"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_verified_check"
+        android:layout_width="18dp"
+        android:layout_height="18dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
         android:layout_height="wrap_content"/>
     <ImageView
         android:layout_marginRight="6dp"

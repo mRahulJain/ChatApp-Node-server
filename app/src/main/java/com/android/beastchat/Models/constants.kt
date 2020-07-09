@@ -18,16 +18,12 @@ class constants {
     val FIREBASE_PATH_USERTOKEN = "userToken"
     val FIREBASE_PATH_USER_MESSAGES = "userMessages"
     val FIREBASE_PATH_USER_NEW_MESSAGES = "userNewMessages"
+    val FIREBASE_PATH_USER_EMAIL_VERIFIED = "emailVerification"
 
     val FIREBASE_PATH_USER_CHATROOM = "userChatRoom"
     val FIREBASE_PATH_USER_ONLINE = "userStatus"
 
     val USER_TYPE_FRIEND_MESSAGES = "1.1"
-    val USER_TYPE_FRIEND_FRIENDS = "1.2"
-    val USER_TYPE_REQUESTED = "2"
-    val USER_TYPE_RECEIVED = "3"
-    val USER_TYPE_USER = "4"
-    val USER_TYPE_SELF = "5"
 
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")

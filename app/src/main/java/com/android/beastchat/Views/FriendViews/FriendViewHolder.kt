@@ -11,6 +11,7 @@ import butterknife.ButterKnife
 import com.android.beastchat.Entities.User
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
+import com.android.beastchat.Services.LiveFriendsServices
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
@@ -25,6 +26,9 @@ class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     @BindView(R.id.list_friends_startChat)
     lateinit var mStartChat: ImageView
 
+    @BindView(R.id.list_friends_verifiedUser)
+    lateinit var mVerifiedIcon: ImageView
+
     init {
         ButterKnife.bind(this, itemView)
     }
@@ -32,6 +36,7 @@ class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun populate(context: Context, user: User) {
         itemView.tag = user
 
+        LiveFriendsServices().getInstant().isEmailVerified(user!!.email, mVerifiedIcon)
         mUserName.text = user!!.username
         if(user!!.userPicture != constants().DEFAULT_USER_PICTURE) {
             Picasso.with(context)

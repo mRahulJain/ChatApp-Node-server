@@ -53,6 +53,15 @@
             android:layout_marginLeft="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/fragment_messages_verifiedUser"
+            android:visibility="gone"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/ic_verified_check"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
         <TextView
             android:layout_weight="1"
             android:layout_width="wrap_content"

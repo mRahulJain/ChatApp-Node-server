@@ -85,6 +85,12 @@ function registerUser(socket, io) {
         password: data.password
       });
 
+      var emailVerificationDB = db.ref('emailVerification');
+      var eVUserRef = emailVerificationDB.child(encodeEmail(data.email));
+      eVUserRef.set({
+        isEmailVerified: false
+      });
+
       Object.keys(io.sockets.sockets).forEach((id) => {
         if(id == socket.id) {
           var message = {
@@ -115,7 +121,7 @@ function detectDisconnection(socket, io) {
 }
 
 function encodeEmail(email) {
-  return email.replace('.',',');
+  return email.replace(/[.]/g,',');
 }
 
 module.exports = {

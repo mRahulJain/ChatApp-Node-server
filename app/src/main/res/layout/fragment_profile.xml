@@ -279,7 +279,7 @@
                         <TextView
                             android:padding="8dp"
                             android:textSize="20sp"
-                            android:text="10"
+                            android:text=""
                             android:id="@+id/fragment_profile_userFriendsCount"
                             android:layout_width="match_parent"
                             android:textColor="@color/colorWhite"

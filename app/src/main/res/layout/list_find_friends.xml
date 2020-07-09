@@ -16,31 +16,48 @@
         app:riv_oval="true"
         android:layout_width="55dp"
         android:layout_height="55dp"/>
-    <TextView
+    <LinearLayout
+        android:id="@+id/list_find_friends_usernameCard"
         android:layout_toRightOf="@+id/list_user_userPicture"
         android:layout_toEndOf="@+id/list_user_userPicture"
-        android:id="@+id/list_user_username"
-        android:text="Rahul Jain"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_marginTop="9dp"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_toRightOf="@+id/list_user_userPicture"
-        android:layout_toEndOf="@+id/list_user_userPicture"
-        android:text="Sent Friend Request"
-        android:layout_below="@+id/list_user_username"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/colorWhite"
-        android:id="@+id/list_user_userStatus"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/list_user_username"
+                android:text="Rahul Jain"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="22sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/list_user_verifiesUser"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="6dp"
+                android:layout_toRightOf="@id/list_find_friends_usernameCard"
+                android:src="@drawable/ic_verified_check"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+        </LinearLayout>
+        <TextView
+            android:text="Sent Friend Request"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/list_user_userStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <ImageView
         android:layout_marginRight="6dp"
         android:layout_marginEnd="6dp"

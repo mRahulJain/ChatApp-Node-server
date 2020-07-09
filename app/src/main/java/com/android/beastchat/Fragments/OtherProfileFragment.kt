@@ -55,6 +55,8 @@ class OtherProfileFragment : BaseFragments() {
     lateinit var mGender: TextView
     @BindView(R.id.fragment_other_profile_userFriendsCount)
     lateinit var mFriendCount: TextView
+    @BindView(R.id.fragment_other_profile_verifiedUser)
+    lateinit var mVerifiedIcon: ImageView
 
     fun newInstant() : OtherProfileFragment {
         return OtherProfileFragment()
@@ -128,11 +130,17 @@ class OtherProfileFragment : BaseFragments() {
             mGender,
             mFriendCount
         )
+        mLiveFriendsServices.isEmailVerified(mUserEmailString, mVerifiedIcon)
     }
 
     @OnClick(R.id.fragment_other_profile_close)
     fun setmClose() {
         activity!!.finish()
+    }
+
+    @OnClick(R.id.fragment_other_profile_verifiedUser)
+    fun setmOnClickVerifiedIcon() {
+        Toast.makeText(context, "This user is verified", Toast.LENGTH_SHORT).show()
     }
 
     @OnClick(R.id.fragment_other_profile_userPicture)

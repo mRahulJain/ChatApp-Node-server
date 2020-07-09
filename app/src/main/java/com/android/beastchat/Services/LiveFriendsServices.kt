@@ -1,15 +1,16 @@
 package com.android.beastchat.Services
 
 import android.content.Context
-import android.os.Debug
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.Entities.Message
 import com.android.beastchat.Entities.User
@@ -21,10 +22,10 @@ import com.android.beastchat.Views.FindFriendsViews.FindFriendsAdapter
 import com.android.beastchat.Views.FriendRequestViews.FriendRequestsAdapter
 import com.android.beastchat.Views.FriendViews.FriendAdapter
 import com.android.beastchat.Views.MessageViews.MessagesAdapter
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
@@ -37,9 +38,7 @@ import io.socket.client.Socket
 import kotlinx.android.synthetic.main.badge_layout.view.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import java.security.AccessController.getContext
 
 class LiveFriendsServices {
     private lateinit var mLiveFriendsServices: LiveFriendsServices
@@ -631,5 +630,78 @@ class LiveFriendsServices {
                 getFriendCount(mFriendCount, getData!!.email)
             }
         })
+    }
+
+    fun isEmailVerified(
+        mUserEmail: String,
+        mImageView: ImageView
+    ) {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_EMAIL_VERIFIED)
+            .child(constants().encodeEmail(mUserEmail))
+            .child("isEmailVerified")
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                mImageView.isVisible = p0.value == true
+            }
+        })
+    }
+
+    fun isEmailVerified(
+        context: Context,
+        mTextView: TextView,
+        mUserEmail: String
+    ) {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_EMAIL_VERIFIED)
+            .child(constants().encodeEmail(mUserEmail))
+            .child("isEmailVerified")
+        databaseReference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if(p0.value == true) {
+                    val img: Drawable = context.resources.getDrawable(R.drawable.ic_verified_user)
+                    img.setBounds(0, 0, 60, 60)
+                    mTextView.setCompoundDrawables(null, null, img, null)
+                } else {
+                    val img: Drawable = context.resources.getDrawable(R.drawable.ic_error)
+                    img.setBounds(0, 0, 60, 60)
+                    mTextView.setCompoundDrawables(null, null, img, null)
+                }
+            }
+        })
+    }
+
+    fun sendVerificationMail(context: Context, mTextView: TextView, mButton: Button) {
+        FirebaseAuth.getInstance().currentUser!!.sendEmailVerification()
+            .addOnSuccessListener {
+                mTextView.text = "Please check your email to verify your account."
+                mButton.isVisible = false
+            }.addOnFailureListener {
+                Toast.makeText(context, "Couldn't send verification mail. Try again later!", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    fun isEmailVerifiedManually(mUserEmail: String) {
+        val databaseReference = FirebaseDatabase.getInstance()
+            .getReference().child(constants().FIREBASE_PATH_USER_EMAIL_VERIFIED)
+            .child(constants().encodeEmail(mUserEmail))
+            .child("isEmailVerified")
+        val userTask = FirebaseAuth.getInstance().currentUser!!.reload()
+        userTask.addOnSuccessListener {
+            val user = FirebaseAuth.getInstance().currentUser!!
+            if(user.isEmailVerified) {
+                databaseReference.setValue(true)
+            } else {
+                databaseReference.setValue(false)
+            }
+        }.addOnFailureListener {
+            Log.d("myCHECK", "something's wrong")
+        }
     }
 }

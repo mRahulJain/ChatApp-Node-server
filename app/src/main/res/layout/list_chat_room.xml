@@ -29,6 +29,16 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/list_chat_room_verifiedUser"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toRightOf="@id/list_chat_room_userName"
+        android:src="@drawable/ic_verified_check"
+        android:layout_width="18dp"
+        android:layout_height="18dp"/>
     <LinearLayout
         android:layout_marginLeft="10dp"
         android:layout_marginTop="2dp"

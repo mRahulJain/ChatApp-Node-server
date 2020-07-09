@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView app:cardElevation="5dp"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="#F2F2F2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/colorBlack"
+                android:id="@+id/dialog_email_verification_text"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp"
+                android:text="Confirm your email"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/dialog_email_verification_iconType"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+        <TextView
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:id="@+id/dialog_email_verification_details"
+            android:textColor="#545454"
+            android:textSize="17sp"
+            android:text="Please check your email to\nverify your account."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.cardview.widget.CardView
+            android:layout_gravity="center"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="5dp"
+            android:layout_marginBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/friend_request_approved"
+                android:id="@+id/dialog_email_verification_verify"
+                android:textColor="@android:color/white"
+                android:text="SEND VERIFICATION MAIL"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"/>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

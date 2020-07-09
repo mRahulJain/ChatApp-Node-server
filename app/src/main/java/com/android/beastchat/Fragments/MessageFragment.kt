@@ -65,6 +65,8 @@ class MessageFragment : BaseFragments() {
     lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.fragment_messages_onlineStatus)
     lateinit var mOnlineStatus: ImageView
+    @BindView(R.id.fragment_messages_verifiedUser)
+    lateinit var mVerifiedIcon: ImageView
 
     lateinit var mUnbinder: Unbinder
 
@@ -126,6 +128,7 @@ class MessageFragment : BaseFragments() {
             mPictureToolbar.setImageResource(R.drawable.user_image)
         }
         mNameToolbar.text = mFriendNameString
+        mLiveFriendsServices.isEmailVerified(mFriendEmailString, mVerifiedIcon)
 
         val adapter = MessagesAdapter(activity!! as BaseFragmentActivity, mUserEmailString, mFriendEmailString)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)

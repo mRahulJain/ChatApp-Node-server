@@ -27,6 +27,8 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     lateinit var mMessageIndicator: ImageView
     @BindView(R.id.list_chat_room_messageSeenIndicator)
     lateinit var mMessageSeenIndicator: ImageView
+    @BindView(R.id.list_chat_room_verifiedUser)
+    lateinit var mVerifiedIcon: ImageView
 
     lateinit var mLiveFriendsServices: LiveFriendsServices
 
@@ -54,6 +56,7 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             mLiveFriendsServices.isSeenMessage(mMessageSeenIndicator, currentUserEmail, chatRoom.friendEmail)
         }
 
+        mLiveFriendsServices.isEmailVerified(chatRoom!!.friendEmail, mVerifiedIcon)
         var lastMessageSent = chatRoom!!.lastMessage
         if(lastMessageSent.length > 42) {
             lastMessageSent = lastMessageSent.substring(0,42)+"..."
