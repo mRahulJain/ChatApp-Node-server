@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.Message
+import com.android.beastchat.Models.EncryptDecryptHelper
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
@@ -56,7 +57,10 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             } else {
                 mUserPicture.setImageResource(R.drawable.user_image)
             }
-            mFriendText.text = message.messageText
+            mFriendText.text = EncryptDecryptHelper().decryptWithAES(
+                message.messageText,
+                constants().AES_ENCRYPTION_CONSTANT
+            )
         } else {
             mainLayoutSender.setBackgroundResource(0)
             mainLayoutUser.setBackgroundResource(R.drawable.message_background)
@@ -77,7 +81,10 @@ class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             } else {
                 mUserPicture.setImageResource(R.drawable.user_image)
             }
-            mUserText.text = message.messageText
+            mUserText.text = EncryptDecryptHelper().decryptWithAES(
+                message.messageText,
+                constants().AES_ENCRYPTION_CONSTANT
+            )
         }
     }
 }

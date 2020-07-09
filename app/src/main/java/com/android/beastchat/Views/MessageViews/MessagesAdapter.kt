@@ -2,12 +2,14 @@ package com.android.beastchat.Views.MessageViews
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Entities.Message
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.list_messages.view.*
 
 class MessagesAdapter() : RecyclerView.Adapter<MessagesViewHolder>() {
     private lateinit var mActivity : BaseFragmentActivity
@@ -46,6 +48,7 @@ class MessagesAdapter() : RecyclerView.Adapter<MessagesViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) {
+        holder.itemView.list_messages_secureText.isVisible = position == 0
         if(position == mMessages.size - 1) {
             holder.populate(mActivity, mMessages[position], mCurrentUserEmail, mFriendEmailString, true)
         } else {

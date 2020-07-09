@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.beastchat.Entities.ChatRoom
+import com.android.beastchat.Models.EncryptDecryptHelper
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
@@ -57,7 +58,10 @@ class ChatRoomViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
 
         mLiveFriendsServices.isEmailVerified(chatRoom!!.friendEmail, mVerifiedIcon)
-        var lastMessageSent = chatRoom!!.lastMessage
+        var lastMessageSent = EncryptDecryptHelper().decryptWithAES(
+            chatRoom!!.lastMessage,
+            constants().AES_ENCRYPTION_CONSTANT
+        )
         if(lastMessageSent.length > 42) {
             lastMessageSent = lastMessageSent.substring(0,42)+"..."
         }

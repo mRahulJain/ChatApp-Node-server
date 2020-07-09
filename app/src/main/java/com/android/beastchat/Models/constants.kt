@@ -25,6 +25,8 @@ class constants {
 
     val USER_TYPE_FRIEND_MESSAGES = "1.1"
 
+    val AES_ENCRYPTION_CONSTANT = "myAESEncryptionConstant"
+
     fun encodeEmail(email : String?) : String {
         return email!!.replace(".", ",")
     }

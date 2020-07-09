@@ -20,6 +20,7 @@ import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.OtherProfileActivity
 import com.android.beastchat.Entities.ChatRoom
 import com.android.beastchat.Entities.Message
+import com.android.beastchat.Models.EncryptDecryptHelper
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveFriendsServices
@@ -204,11 +205,16 @@ class MessageFragment : BaseFragments() {
         if(mMessageBox.text.toString().trim() == "") {
             Toast.makeText(activity!!, "Enter something", Toast.LENGTH_SHORT).show()
         } else {
+            val toSendMessage = mMessageBox.text.toString().trim()
+            val toStoreMessage = EncryptDecryptHelper().encryptWithAES(
+                toSendMessage,
+                constants().AES_ENCRYPTION_CONSTANT
+            )
             var chatRoom = ChatRoom(
                 mFriendPictureString,
                 mFriendNameString,
                 mFriendEmailString,
-                mMessageBox.text.toString().trim(),
+                toStoreMessage,
                 mUserEmailString,
                 lastMessageRead = true,
                 sentLastMessage = true
@@ -220,7 +226,7 @@ class MessageFragment : BaseFragments() {
             val newMessageReference = mGetAllMessagesReference.push()
             val message = Message(
                 messageId = newMessageReference.key!!,
-                messageText = mMessageBox.text.toString().trim(),
+                messageText = toStoreMessage,
                 messageSenderEmail = mUserEmailString,
                 messageSenderPicture = mSharedPreferences.getString(constants().USER_PICTURE, "")!!
             )
@@ -231,7 +237,7 @@ class MessageFragment : BaseFragments() {
                     newMessageReference.key!!,
                     mUserEmailString,
                     mSharedPreferences.getString(constants().USER_PICTURE, "")!!,
-                    mMessageBox!!.text.toString().trim(),
+                    toStoreMessage,
                     mFriendEmailString,
                     mSharedPreferences!!.getString(constants().USER_NAME, "")!!
                 )
@@ -258,11 +264,16 @@ class MessageFragment : BaseFragments() {
 
                 override fun onNext(t: String?) {
                     if(t!!.trim().isNotEmpty()) {
+                        val toSendMessage = t!!
+                        val toStoreMessage = EncryptDecryptHelper().encryptWithAES(
+                            toSendMessage,
+                            constants().AES_ENCRYPTION_CONSTANT
+                        )
                         var chatRoom = ChatRoom(
                             mFriendPictureString,
                             mFriendNameString,
                             mFriendEmailString,
-                            t!!,
+                            toStoreMessage,
                             mUserEmailString,
                             lastMessageRead = true,
                             sentLastMessage = false
