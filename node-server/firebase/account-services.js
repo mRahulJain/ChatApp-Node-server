@@ -84,7 +84,7 @@ function registerUser(socket, io) {
         gender: 'Not yet assigned',
         dateJoined: date,
         hasLoggedIn: false,
-        password: data.password
+        password: data.passwordHash
       });
 
       var emailVerificationDB = db.ref('emailVerification');

@@ -6,10 +6,10 @@
     android:layout_margin="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
-        android:layout_marginBottom="5dp"
         android:visibility="gone"
+        android:layout_marginBottom="5dp"
         app:cardBackgroundColor="@color/editTextBackground"
         android:id="@+id/list_messages_secureText"
         android:layout_centerHorizontal="true"
@@ -17,15 +17,22 @@
         android:layout_height="wrap_content">
         <TextView
             android:textSize="12sp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="12dp"
+            android:layout_marginLeft="18dp"
             android:paddingRight="12dp"
             android:textColor="@color/colorDullWhile"
             android:gravity="center"
             android:text="This conversation is end to end encrypted."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_marginLeft="12dp"
+            android:layout_gravity="center|left"
+            android:src="@drawable/ic_lock"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
     </androidx.cardview.widget.CardView>
     <LinearLayout
         android:layout_below="@id/list_messages_secureText"

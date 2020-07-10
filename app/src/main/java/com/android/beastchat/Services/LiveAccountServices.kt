@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.InboxActivity
+import com.android.beastchat.Models.EncryptDecryptHelper
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.google.android.gms.tasks.Continuation
@@ -60,7 +61,7 @@ class LiveAccountServices {
                     refGender: DatabaseReference, items: ArrayList<String>, mSharedPreferences: SharedPreferences) {
         refAbout.setValue(items[0])
         refUsername.setValue(items[1])
-        refPassword.setValue(items[2])
+        refPassword.setValue(EncryptDecryptHelper().encryptWithAES(items[2], constants().AES_ENCRYPTION_CONSTANT))
         refGender.setValue(items[3])
         mSharedPreferences!!.edit().putString(
             constants().USER_NAME, items[1]
@@ -295,19 +296,19 @@ class LiveAccountServices {
                     val photo = t[2]
                     val userName = t[3]
                     val gender = t[4]
-                    val password = t[5]
+                    var password = t[5]
                     val about = t[6]
 
-                    if(!email.equals("error")) {
+                    if(email != "error") {
                         FirebaseAuth.getInstance().signInWithCustomToken(token)
                             .addOnCompleteListener {
                                 if(it.isSuccessful) {
-                                    Log.d("mCHECKHERE", password)
-                                    val databaseReference = FirebaseDatabase.getInstance()
+                                    password = EncryptDecryptHelper().encryptWithAES(password, constants().AES_ENCRYPTION_CONSTANT)
+                                    val databaseReferencePassword = FirebaseDatabase.getInstance()
                                         .getReference().child(constants().FIREBASE_USERS_PATH)
                                         .child(constants().encodeEmail(email))
                                         .child("password")
-                                    databaseReference.setValue(password)
+                                    databaseReferencePassword.setValue(password)
                                     sharedPreference!!.edit().putString(
                                         constants().USER_EMAIL, email
                                     ).apply()
@@ -366,6 +367,7 @@ class LiveAccountServices {
                 val userName = t[0]
                 val userEmail = t[1]
                 val userPassword = t[2]
+                val userPasswordHash = EncryptDecryptHelper().encryptWithAES(t[2], constants().AES_ENCRYPTION_CONSTANT)
                 when {
                     userName!!.isEmpty() -> {
                         USER_ERROR_EMPTY_USERNAME
@@ -388,6 +390,7 @@ class LiveAccountServices {
                             sendData.put("email", "${userEmail!!}")
                             sendData.put("username", "${userName!!}")
                             sendData.put("password", "${userPassword!!}")
+                            sendData.put("passwordHash", "${userPasswordHash}")
                             socket.emit("userData", sendData)
                             SERVER_SUCCESS
                         } catch (e : JSONException) {

@@ -21,6 +21,7 @@ import butterknife.Unbinder
 import com.android.beastchat.Activities.BaseFragmentActivity
 import com.android.beastchat.Activities.ImageActivity
 import com.android.beastchat.Models.AndroidPermissions
+import com.android.beastchat.Models.EncryptDecryptHelper
 import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.android.beastchat.Services.LiveAccountServices
@@ -154,16 +155,19 @@ class ProfileFragment : BaseFragments(),
     }
 
     private fun getPassword(mPassword: TextView, mPasswordLength: TextView) {
-        val databaseReference = FirebaseDatabase.getInstance()
+        val databaseReferencePassword = FirebaseDatabase.getInstance()
             .getReference().child(constants().FIREBASE_USERS_PATH)
             .child(constants().encodeEmail(mUserEmailString))
             .child("password")
-        databaseReference.addValueEventListener(object : ValueEventListener {
+        databaseReferencePassword.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                mExistingPassword = p0.value.toString()
+                mExistingPassword = EncryptDecryptHelper().decryptWithAES(
+                    p0.value.toString(),
+                    constants().AES_ENCRYPTION_CONSTANT
+                )
                 mPassword.text = mExistingPassword
                 mPasswordLength.text = mExistingPassword.length.toString() + " characters"
             }
@@ -174,6 +178,12 @@ class ProfileFragment : BaseFragments(),
     fun setmChangeProfile() {
         val bottomSheetChangeProfile = BottomSheetChangeProfile(this)
         bottomSheetChangeProfile.show(childFragmentManager, "change profile image")
+    }
+
+    @OnClick(R.id.fragment_profile_userPassword)
+    fun setmPasswordDialog() {
+        val dialog = PasswordDialog(mActivity!!)
+        dialog.show()
     }
 
     @OnClick(R.id.fragment_profile_userEmail)

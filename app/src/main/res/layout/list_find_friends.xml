@@ -42,6 +42,7 @@
             <ImageView
                 android:id="@+id/list_user_verifiesUser"
                 android:layout_marginLeft="6dp"
+                android:visibility="gone"
                 android:layout_gravity="center"
                 android:layout_marginStart="6dp"
                 android:layout_toRightOf="@id/list_find_friends_usernameCard"
