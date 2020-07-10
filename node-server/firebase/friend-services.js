@@ -72,7 +72,8 @@ function sendMessage(socket, io) {
         to:snapshot.val().token,
         data:{
           title: 'New Message',
-          body: `${data.senderName}: ${data.messageText}`,
+          senderName: `${data.senderName}`,
+          body: `${data.messageText}`,
           image: `${data.senderPicture}`
         }
       };

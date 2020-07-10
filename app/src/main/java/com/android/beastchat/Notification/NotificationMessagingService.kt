@@ -18,6 +18,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.android.beastchat.Activities.FriendsActivity
 import com.android.beastchat.Activities.InboxActivity
+import com.android.beastchat.Models.EncryptDecryptHelper
+import com.android.beastchat.Models.constants
 import com.android.beastchat.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -31,7 +33,12 @@ class NotificationMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
         var title = p0.data!!["title"]
-        var body = p0.data!!["body"]
+        var senderName = p0.data!!["senderName"]
+        var message = EncryptDecryptHelper().decryptWithAES(
+            p0.data!!["body"],
+            constants().AES_ENCRYPTION_CONSTANT
+        )
+        var body = "$senderName: $message"
         var picture = p0.data!!["image"]
         sendNotification(title!!, body!!, picture!!)
     }
