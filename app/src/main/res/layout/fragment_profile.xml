@@ -55,7 +55,14 @@
             android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_below="@id/fragment_profile_editProfile"
+            android:layout_marginTop="10dp"
+            android:background="#50000000"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
         <ScrollView
+            android:layout_marginTop="10dp"
             android:id="@+id/fragment_profile_scrollArea"
             android:layout_below="@+id/fragment_profile_editProfile"
             android:layout_width="match_parent"
@@ -296,28 +303,26 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+                <Button
+                    android:id="@+id/fragment_profile_signOut"
+                    android:layout_marginTop="20dp"
+                    android:background="@android:color/transparent"
+                    android:translationZ="20dp"
+                    android:elevation="20dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="30dp"
+                    android:drawablePadding="12dp"
+                    android:drawableLeft="@drawable/ic_signout"
+                    android:textColor="#817889"
+                    android:textAllCaps="false"
+                    android:text="Sign Out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </ScrollView>
-        <Button
-            android:id="@+id/fragment_profile_signOut"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="20dp"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:translationZ="20dp"
-            android:elevation="20dp"
-            android:textStyle="bold"
-            android:layout_below="@+id/fragment_profile_scrollArea"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_marginBottom="30dp"
-            android:drawablePadding="12dp"
-            android:drawableLeft="@drawable/ic_signout"
-            android:textColor="#817889"
-            android:textAllCaps="false"
-            android:text="Sign Out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

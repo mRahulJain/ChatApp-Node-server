@@ -40,11 +40,11 @@ class NotificationMessagingService : FirebaseMessagingService() {
         )
         var body = "$senderName: $message"
         var picture = p0.data!!["image"]
-        sendNotification(title!!, body!!, picture!!)
+        sendNotification(title!!, senderName!!, body!!, picture!!)
     }
 
     @SuppressLint("WrongConstant")
-    private fun sendNotification(title: String, body: String, picture: String) {
+    private fun sendNotification(title: String, senderName: String, body: String, picture: String) {
         Log.d("myPIC", "${picture}")
         val intentFriendRequest = Intent(this, FriendsActivity::class.java)
         val intentNewMessage = Intent(this, InboxActivity::class.java)
@@ -110,7 +110,7 @@ class NotificationMessagingService : FirebaseMessagingService() {
         } else {
             clickableNotification =  NotificationCompat.Builder(this, "first")
                 .setContentTitle(title)
-                .setContentText(body)
+                .setContentText(senderName)
                 .setVibrate(pattern.toLongArray())
                 .setSmallIcon(R.drawable.sms_small)
                 .setLargeIcon(myBitMap)
