@@ -44,15 +44,15 @@ Message flow -
 <p>
 Edit User Profile -
 <br>
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/userProfile1.gif" width="400" height="490"/>
+<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/userProfile1.gif" width="490" height="490"/>
 <br>
 Verified and Password Encryption Dialog -
 <br>
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/userProfile2.gif" width="400" height="490"/>
+<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/userProfile2.gif" width="490" height="490"/>
 <br>
 Draft Message -
 <br>
-<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/draftMessage.gif" width="400" height="490"/>
+<img src="https://github.com/mRahulJain/ChatApp-Node-server/blob/master/app/videos/draftMessage.gif" width="490" height="490"/>
 </p>
 <br><br>
 <h1>Project Features</h1>
